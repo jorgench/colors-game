@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Bowlby+One&display=swap');
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  --black-color: #000;
+  --white-color: #fff;
+
+  --dark-color: #091540;
+  --light-color: #EEF0F2;
+
+
+  --default-surface: var(--light-color); 
+  --default-color: var(--dark-color);
+
+
+  --primary-surface: #C03221;
+  --primary-color: var(--white-color);
+  --secondary-surface: #D5B942;
+  --secondary-color: var(--black-color);
+
+
+  --size-base: 1rem;
+  --size-xs: 0.5rem;
+  --size-s: 1rem;
+  --size-m: 2rem;
+  --size-l: 4rem;
+  --size-xl: 8rem;
+
+
+  --size-box: clamp(5rem, calc(2vh + 2rem) , 10vh)
+  
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --default-surface: var(--dark-color); 
+    --default-color: var(--light-color);
+
+
+    --primary-surface: #F26419;
+    --primary-color: var(--black-color);
+    --secondary-surface: #F6AE2D;
+    --secondary-color: var(--black-color);
+  }
+}
+
+
+[data-theme="dark"] {
+  --default-surface: var(--dark-color); 
+    --default-color: var(--light-color);
+
+
+    --primary-surface: #F26419;
+    --primary-color: var(--black-color);
+    --secondary-surface: #F6AE2D;
+    --secondary-color: var(--black-color);
+}
+
+[data-theme="light"] {
+  --default-surface: var(--light-color); 
+  --default-color: var(--dark-color);
+
+
+  --primary-surface: #C03221;
+  --primary-color: var(--white-color);
+  --secondary-surface: #D5B942;
+  --secondary-color: var(--black-color);
+}
+
+body {
+  background-color: var(--default-surface);
+  color: var(--default-color);
+}
+
+a {
+  font-weight: 500;
+  color: var(--primary-surface);
+  text-decoration: inherit;
+}
+a:hover {
+  color: var(--secondary-surface);
+}
+a:focus {
+  outline: var(--size-xs) auto var(--secondary-surface);
+}
+
+
+button, .button {
+  border-radius: 0.5em;
+  border: 1px solid transparent;
+  padding: var(--size-xs) var(--size-s);
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--primary-surface);
+  cursor: pointer;
+  color: var(--primary-color);
+  transition: border-color 0.25s;
+  outline-color: var(--secondary-surface);
+}
+button:hover, .button:hover {
+  border-color: var(--secondary-surface);
+}
+button:focus, .button:focus
+button:focus-visible, .button:focus-visible {
+  outline: var(--size-xs) auto var(--secondary-surface);
+}
+
+button:active {
+  background-color: var(--secondary-surface);
+  outline-color: var(--secondary-surface);
+}
+
+
+
+.title {
+  font-family: "Bowlby One", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.1ch;
+  margin: 0;
+}
+
+.h1 {
+  font-family: 4rem;
+}
+
+.container {
+  max-width: 95rem;
+  margin: auto;
+  padding: var(--size-m);
+}
+
+
+
+.item-grid {
+  border-bottom-left-radius: 0.5em 1em;
+  border-bottom-right-radius: 0.5em 1em;
+  border-top-left-radius: 0.5em 1em;
+  border-top-right-radius: 0.5em 1em;
+  background-color: rgba(0, 0, 0, 0.5);
+  height: var(--size-box);
+  width: var(--size-box);
+}

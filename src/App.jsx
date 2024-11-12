@@ -1,12 +1,11 @@
-import './App.css'
-import { ColorPallete } from './components/ColorPallette'
+import { LevelsPage } from './pages/LevelsPage'
+import { WelcomePage } from './pages/WelcomePage'
+import { useGameState } from './store/game.state'
 
 function App() {
-  return (
-    <>
-      <ColorPallete rows={4} columns={5} />
-    </>
-  )
+  const { gameStep } = useGameState()
+
+  return <>{gameStep === 'empty' ? <WelcomePage /> : gameStep === 'started' ? <LevelsPage /> : <div></div>}</>
 }
 
 export default App
