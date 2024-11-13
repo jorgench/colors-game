@@ -1,11 +1,12 @@
 import { useDroppable } from '@dnd-kit/core'
 
-export function GameBox({ id, children, style }) {
+export function GameBox({ id, children, style, data }) {
   const { isOver, setNodeRef } = useDroppable({
     id: id,
+    data,
   })
   const innerStyle = {
-    opacity: isOver ? 1 : 0.5,
+    outline: isOver ? '1px solid var(--default-color)' : 'none',
   }
 
   return (

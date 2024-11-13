@@ -155,7 +155,7 @@ function getColorForThisPosition(baseColor, row, column) {
     return baseColor
   }
 
-  return getHueColor(getHueColor(baseColor, column), row)
+  return getMonochromePosition(getHueColor(baseColor, column), row)
 }
 
 /**

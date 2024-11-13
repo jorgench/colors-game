@@ -1,9 +1,10 @@
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 
-export function GameColor({ id, children, color }) {
+export function GameColor({ id, children, color, data }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
+    data,
   })
   const style = {
     borderBottomLeftRadius: '0.5em 1em',
