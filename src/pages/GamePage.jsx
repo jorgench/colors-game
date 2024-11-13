@@ -1,27 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { generateField } from '../utils/level.utils'
-import { createPallette, generatePallet, getBaseColor } from '../utils/colors.utils'
-import { ColorItem } from '../components/ColorItem'
+import { createPallette, getBaseColor } from '../utils/colors.utils'
 import { GameBox } from '../components/GameBox'
 import { GameColor } from '../components/GameColor'
 import { DndContext } from '@dnd-kit/core'
-import { useEffect } from 'react'
-
-function BoxEmpty({ column, row, children }) {
-  return (
-    <div className="item-grid" style={{ gridColumn: column + 1, gridRow: row + 1 }}>
-      {children}
-    </div>
-  )
-}
 
 function useGenerateLevel(dots) {
   const [state, setState] = useState(generateField(dots))
   const { gridMap, path, numColumn, numRow } = state
 
-  function regenerateState() {
-    setState(generateField(dots))
-  }
+  const regenerateState = useCallback(() => setState(generateField(dots)), [dots])
 
   return { gridMap, numColumn, numRow, regenerateState }
 }
@@ -29,25 +17,25 @@ function useGenerateLevel(dots) {
 export function GamePage() {
   const { gridMap, numColumn, numRow, regenerateState } = useGenerateLevel(4)
   const [colorDefault, setColorDefault] = useState(getBaseColor())
-  const [pallette, setPalletteColor] = useState([])
+  //const [pallette, setPalletteColor] = useState([])
   const [boardState, setBoardState] = useState({})
 
-  useEffect(() => {
-    setPalletteColor(createPallette(gridMap, colorDefault))
-  }, [gridMap, colorDefault])
-
   const [plainPallette, setPlainPallette] = useState([])
+
   useEffect(() => {
-    const newPallette = pallette
-      .map((col, x) =>
-        col.map((v, y) => {
-          return !v ? false : { color: v, row: x + 1, col: y + 1 }
-        }),
-      )
-      .flat()
-      .filter(Boolean)
+    const pallette = createPallette(gridMap, colorDefault)
+    const newPallette = pallette.reduce((prev, row, x) => {
+      if (!row) return prev
+      row.forEach((col, y) => {
+        if (col) {
+          prev.push({ color: col, row: x + 1, col: y + 1 })
+        }
+      })
+      return prev
+    }, [])
+
     setPlainPallette(newPallette)
-  }, [pallette])
+  }, [gridMap, colorDefault])
 
   function handleDragEnd(obj) {
     if (obj.collisions.length < 1) return
@@ -57,25 +45,45 @@ export function GamePage() {
 
     const copyBoardState = { ...boardState }
 
-    console.log(copyBoardState, boxData)
-    if (copyBoardState[`${boxData.row},${boxData.col}`]) {
-      return
+    if (boxData.kind === 'option') {
+      const copyPlainPallette = [...plainPallette]
+      const optionPallette = copyPlainPallette[boxData.optionPlace]
+
+      if (!optionPallette) {
+        copyPlainPallette[boxData.optionPlace] = { ...colorData }
+
+        if (colorData?.place?.kind === 'option') {
+          copyPlainPallette[`${colorData.place.key}`] = null
+        } else {
+          copyBoardState[`${colorData.place.key}`] = null
+          setBoardState(copyBoardState)
+        }
+        setPlainPallette(copyPlainPallette)
+      }
+    } else {
+      if (copyBoardState[`${boxData.row},${boxData.col}`]) {
+        return
+      }
+
+      copyBoardState[`${boxData.row},${boxData.col}`] = { ...colorData }
+
+      if (colorData?.place?.kind === 'board') {
+        copyBoardState[`${colorData.place.key}`] = null
+        setBoardState(copyBoardState)
+      } else {
+        setBoardState(copyBoardState)
+        removeItemFromPallette(colorData)
+      }
     }
-
-    copyBoardState[`${boxData.row},${boxData.col}`] = colorData
-
-    setBoardState(copyBoardState)
-    removeItemFromPallette(colorData)
   }
 
   function removeItemFromPallette(colorData) {
-    const copyPainPallette = [...plainPallette]
-    const ind = copyPainPallette.findIndex(item => {
-      return item.color === colorData.color
+    const copyPlainPallette = [...plainPallette]
+    const ind = copyPlainPallette.findIndex(item => {
+      return item?.color === colorData.color
     })
-    console.log('ind', ind)
-    copyPainPallette[ind] = null
-    setPlainPallette(copyPainPallette)
+    copyPlainPallette[ind] = null
+    setPlainPallette(copyPlainPallette)
   }
 
   return (
@@ -99,13 +107,13 @@ export function GamePage() {
                   id={`item-${x}-${y}`}
                   key={`item-${x}-${y}`}
                   style={{ gridColumn: y + 1, gridRow: x + 1 }}
-                  data={{ row: x, col: y }}
+                  data={{ row: x, col: y, kind: 'board' }}
                 >
                   {boardState[`${x},${y}`] ? (
                     <GameColor
                       key={boardState[`${x},${y}`].color}
                       id={boardState[`${x},${y}`].color}
-                      data={boardState[`${x},${y}`]}
+                      data={{ ...boardState[`${x},${y}`], place: { kind: 'board', key: `${x},${y}` } }}
                       color={boardState[`${x},${y}`].color}
                     />
                   ) : null}
@@ -119,8 +127,15 @@ export function GamePage() {
         <div style={{ display: 'flex', gap: '1em' }}>
           {plainPallette.map((item, i) => {
             return (
-              <GameBox id={`item-${i}`} key={`item-${i}`}>
-                {item ? <GameColor key={i + item.color} id={item.color} data={item} color={item.color} /> : null}
+              <GameBox id={`item-${i}`} key={`item-${i}`} data={{ optionPlace: i, kind: 'option' }}>
+                {item ? (
+                  <GameColor
+                    key={i + item.color}
+                    id={item.color}
+                    data={{ ...item, place: { kind: 'option', key: i } }}
+                    color={item.color}
+                  />
+                ) : null}
               </GameBox>
             )
           })}
