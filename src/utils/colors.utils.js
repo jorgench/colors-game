@@ -16,8 +16,8 @@ function getMonochromePosition(baseColor, move) {
     }
   } else {
     return {
-      l: baseColor.l - j * 4.76,
-      c: baseColor.c - j * 10,
+      l: baseColor.l - j * 8.76,
+      c: baseColor.c - j * 12,
       h: adjustHue(baseColor.h),
       mode: 'lch',
     }
@@ -123,7 +123,7 @@ function createHueShiftPalette({ base, minLightness, maxLightness, hueStep, step
 }
 
 function getHueColor(baseColor, position) {
-  return generateHue({ base: baseColor, minLightness: 10, maxLightness: 90, hueStep: 20, steps: 4 })(position, 10)
+  return generateHue({ base: baseColor, minLightness: 30, maxLightness: 90, hueStep: 10, steps: 4 })(position, 4)
 }
 
 const lchConvert = converter('lch')
@@ -155,9 +155,14 @@ function getColorForThisPosition(baseColor, row, column) {
     return baseColor
   }
 
-  return getMonochromePosition(getHueColor(baseColor, column), row)
+  return getHueColor(getHueColor(baseColor, column), row)
 }
 
+/**
+ * @param {[]} gridMap
+ * @param {{}} baseColor
+ * @returns []
+ */
 export function createPallette(gridMap, baseColor) {
   return gridMap.map(row => {
     return row.map(position => {
