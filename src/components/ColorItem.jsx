@@ -1,4 +1,4 @@
-export function ColorItem({ color = '#fff', showColor = true }) {
+export function ColorItem({ color = '#fff', showColor = false, style }) {
   return (
     <div
       style={{
@@ -10,6 +10,7 @@ export function ColorItem({ color = '#fff', showColor = true }) {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        ...style,
       }}
     >
       {showColor ? color : ''}

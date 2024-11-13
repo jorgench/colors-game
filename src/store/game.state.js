@@ -28,6 +28,11 @@ export const useGameState = create(
             gameStep: 'started',
           }))
         },
+        setStep() {
+          set(() => ({
+            gameStep: 'finish',
+          }))
+        },
       }
     },
   ),

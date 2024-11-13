@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { LevelItem } from '../components/LevelItem'
+import { useGameState } from '../store/game.state'
 
 export function LevelsPage() {
+  const { setStep } = useGameState()
   const [page, setPage] = useState(1)
 
   const allLevels = 25
@@ -13,6 +15,7 @@ export function LevelsPage() {
 
   function openLevel(level) {
     console.log('New Level ', level)
+    setStep()
   }
 
   function changePage(newPage) {
