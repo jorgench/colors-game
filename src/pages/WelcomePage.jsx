@@ -4,7 +4,7 @@ export function WelcomePage() {
   const { setPlayer } = useGameState()
 
   return (
-    <main className="container">
+    <main className="container page">
       <h1 className="title h1">Colors</h1>
       <p>
         Este es un juego inspirado en <a href="#">Blendoku</a> Realizado en React

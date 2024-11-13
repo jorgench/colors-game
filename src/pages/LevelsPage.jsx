@@ -25,7 +25,7 @@ export function LevelsPage() {
   }
 
   return (
-    <main className="container">
+    <main className="container page">
       <h1 className="title">
         Nivel {page}-{allLevels * page}
       </h1>
@@ -48,8 +48,10 @@ export function LevelsPage() {
         })}
       </div>
 
-      <button onClick={() => changePage(page - 1)}>Anterior</button>
-      <button onClick={() => changePage(page + 1)}>Siguiente</button>
+      <div>
+        <button onClick={() => changePage(page - 1)}>Anterior</button>
+        <button onClick={() => changePage(page + 1)}>Siguiente</button>
+      </div>
     </main>
   )
 }

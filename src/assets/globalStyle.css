@@ -146,3 +146,26 @@ button:active {
   height: var(--size-box);
   width: var(--size-box);
 }
+
+
+.page{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--size-m);
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.footer {
+  max-width: 95rem;
+  width: 100%;
+  padding: var(--size-m);
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
