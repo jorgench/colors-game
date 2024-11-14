@@ -4,6 +4,7 @@ import { createPallette, getBaseColor } from '../utils/colors.utils'
 import { GameBox } from '../components/GameBox'
 import { GameColor } from '../components/GameColor'
 import { DndContext } from '@dnd-kit/core'
+import { TimerInLevel } from '../components/TimerInLevel'
 
 function useGenerateLevel(dots) {
   const [state, setState] = useState(generateField(dots))
@@ -22,13 +23,15 @@ export function GamePage() {
 
   const [plainPallette, setPlainPallette] = useState([])
 
+  const [steps, setSteps] = useState(0)
+
   useEffect(() => {
     const pallette = createPallette(gridMap, colorDefault)
     const newPallette = pallette.reduce((prev, row, x) => {
       if (!row) return prev
       row.forEach((col, y) => {
         if (col) {
-          prev.push({ color: col, row: x + 1, col: y + 1 })
+          prev.push({ color: col, row: x, col: y })
         }
       })
       return prev
@@ -36,6 +39,11 @@ export function GamePage() {
 
     setPlainPallette(newPallette)
   }, [gridMap, colorDefault])
+
+  useEffect(() => {
+    setSteps(steps + 1)
+    checkWinnerCondition()
+  }, [boardState])
 
   function handleDragEnd(obj) {
     if (obj.collisions.length < 1) return
@@ -86,9 +94,23 @@ export function GamePage() {
     setPlainPallette(copyPlainPallette)
   }
 
+  function checkWinnerCondition() {
+    console.log(boardState, steps)
+
+    const keys = Object.keys(boardState)
+    const winner = keys.every(key => {
+      const value = boardState[key]
+      return value && key === `${value.row},${value.col}`
+    })
+
+    console.log('Has Winner: ', winner && keys.length === 4)
+  }
+  console.log('rerender')
+
   return (
     <main className="container">
       Grid: {gridMap.length} {gridMap[0].length}
+      <TimerInLevel />
       <DndContext onDragEnd={handleDragEnd}>
         <div
           style={{
