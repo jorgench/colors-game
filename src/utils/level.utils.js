@@ -84,6 +84,5 @@ export function calculatePoints({ level, time, steps }) {
   const additionalMoves = steps - minMovements
 
   const points = levelStart / (1 + time / timePenalization) - additionalMoves * movePenalization
-  console.log('points::', points)
-  return points
+  return Math.ceil(points)
 }
