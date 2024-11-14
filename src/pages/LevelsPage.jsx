@@ -41,14 +41,14 @@ export function LevelsPage() {
       >
         {itemsPerPage.map((level, k) => {
           return (
-            <div className="item-grid" points={pointsHistory[k]} key={`level-${level}`}>
-              <LevelItem level={level} onClick={() => openLevel(level)} />
+            <div className="item-grid" key={`level-${level}`}>
+              <LevelItem level={level} points={pointsHistory[k]} onClick={() => openLevel(level)} />
             </div>
           )
         })}
       </div>
 
-      <div>
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
         <button onClick={() => changePage(page - 1)}>Anterior</button>
         <button onClick={() => changePage(page + 1)}>Siguiente</button>
       </div>
