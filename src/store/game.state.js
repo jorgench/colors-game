@@ -18,7 +18,7 @@ export const useGameState = create(
           if (points < 1) return
           set(state => ({
             level: (state.level += 1),
-            points: [...state.pointsHistory, points],
+            pointsHistory: [...state.pointsHistory, points],
           }))
         },
         setPlayer(name = '') {
@@ -28,9 +28,9 @@ export const useGameState = create(
             gameStep: 'started',
           }))
         },
-        setStep() {
+        setStep(step = 'finish') {
           set(() => ({
-            gameStep: 'finish',
+            gameStep: step,
           }))
         },
       }
