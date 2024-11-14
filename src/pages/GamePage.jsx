@@ -1,14 +1,16 @@
 import { useState, useEffect, useCallback } from 'react'
-import { generateField } from '../utils/level.utils'
+import { calculatePoints, generateField } from '../utils/level.utils'
 import { createPallette, getBaseColor } from '../utils/colors.utils'
 import { GameBox } from '../components/GameBox'
 import { GameColor } from '../components/GameColor'
 import { DndContext } from '@dnd-kit/core'
 import { TimerInLevel } from '../components/TimerInLevel'
+import { useGameState } from '../store/game.state'
+import { useRef } from 'react'
 
 function useGenerateLevel(dots) {
   const [state, setState] = useState(generateField(dots))
-  const { gridMap, path, numColumn, numRow } = state
+  const { gridMap, numColumn, numRow } = state
 
   const regenerateState = useCallback(() => setState(generateField(dots)), [dots])
 
@@ -16,6 +18,7 @@ function useGenerateLevel(dots) {
 }
 
 export function GamePage() {
+  const { setNextLevel, setStep } = useGameState()
   const { gridMap, numColumn, numRow, regenerateState } = useGenerateLevel(4)
   const [colorDefault, setColorDefault] = useState(getBaseColor())
   //const [pallette, setPalletteColor] = useState([])
@@ -24,6 +27,8 @@ export function GamePage() {
   const [plainPallette, setPlainPallette] = useState([])
 
   const [steps, setSteps] = useState(0)
+
+  const timerRef = useRef()
 
   useEffect(() => {
     const pallette = createPallette(gridMap, colorDefault)
@@ -42,7 +47,16 @@ export function GamePage() {
 
   useEffect(() => {
     setSteps(steps + 1)
-    checkWinnerCondition()
+    if (checkWinnerCondition()) {
+      setNextLevel(
+        calculatePoints({
+          level: 4,
+          time: timerRef.current.getData(),
+          steps,
+        }),
+      )
+      setStep('started')
+    }
   }, [boardState])
 
   function handleDragEnd(obj) {
@@ -103,14 +117,14 @@ export function GamePage() {
       return value && key === `${value.row},${value.col}`
     })
 
-    console.log('Has Winner: ', winner && keys.length === 4)
+    return winner && keys.length === 4
   }
   console.log('rerender')
 
   return (
     <main className="container">
       Grid: {gridMap.length} {gridMap[0].length}
-      <TimerInLevel />
+      <TimerInLevel ref={timerRef} />
       <DndContext onDragEnd={handleDragEnd}>
         <div
           style={{
@@ -137,6 +151,7 @@ export function GamePage() {
                       id={boardState[`${x},${y}`].color}
                       data={{ ...boardState[`${x},${y}`], place: { kind: 'board', key: `${x},${y}` } }}
                       color={boardState[`${x},${y}`].color}
+                      isInCorrectPlace={boardState[`${x},${y}`].col === y && boardState[`${x},${y}`].row === x}
                     />
                   ) : null}
                 </GameBox>

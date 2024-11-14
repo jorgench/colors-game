@@ -1,8 +1,14 @@
+import { useImperativeHandle } from 'react'
+import { forwardRef } from 'react'
 import { useCallback } from 'react'
 import { useState, useEffect } from 'react'
 
-export function TimerInLevel({ isActive = true }) {
+export const TimerInLevel = forwardRef(function TimerInLevel({ isActive = true }, ref) {
   const [seconds, setSeconds] = useState(0)
+
+  useImperativeHandle(ref, () => ({
+    getData: () => seconds,
+  }))
 
   const formatSeconds = useCallback(s => new Date(s * 1000).toISOString().substring(14, 19))
 
@@ -19,4 +25,4 @@ export function TimerInLevel({ isActive = true }) {
   }, [isActive])
 
   return <div>{formatSeconds(seconds)}</div>
-}
+})
