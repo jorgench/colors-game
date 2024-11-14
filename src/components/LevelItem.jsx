@@ -19,11 +19,11 @@ export function LevelItem({ level = 1, points, onClick = () => [] }) {
   return (
     <div onClick={onClick} style={style}>
       <div>
-        <Icon icon="mynaui:star" />
-        <Icon icon="mynaui:star" />
-        <Icon icon="mynaui:star" />
+        {new Array(3).fill().map((_, i) => {
+          return points > i * 333 ? <Icon key={i} icon="mynaui:star-solid" /> : <Icon key={i} icon="mynaui:star" />
+        })}
       </div>
-      <div>{level}</div>
+      <div style={{ alignSelf: 'flex-end' }}>{level}</div>
     </div>
   )
 }
