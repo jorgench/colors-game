@@ -121,7 +121,7 @@ export function generateLevel(level) {
   const movePenalizationFactor = 1 + level * 0.05
   const timePenalizationFactor = 1 + level * 0.03
 
-  const result = {
+  return {
     name: level,
     dots: dotsInLevel,
     minMovements,
@@ -129,9 +129,6 @@ export function generateLevel(level) {
     movePenalizationFactor,
     timePenalizationFactor,
   }
-
-  console.log(result)
-  return result
 }
 
 export function calculatePoints({ level, time, steps }) {

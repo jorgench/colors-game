@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import {
   calculatePoints,
   generateCheckWinner,
@@ -7,22 +7,28 @@ import {
   generateLevel,
   moveItemInLevel,
 } from '../utils/level.utils'
-import { createPallette, getBaseColor } from '../utils/colors.utils'
+import {
+  changeColorFromBoardState,
+  changeColorFromOptionsState,
+  createPallette,
+  getBaseColor,
+} from '../utils/colors.utils'
 import { GameBox } from '../components/GameBox'
 import { GameColor } from '../components/GameColor'
 import { DndContext } from '@dnd-kit/core'
 import { TimerInLevel } from '../components/TimerInLevel'
 import { useGameState } from '../store/game.state'
 import { useRef } from 'react'
+import { useMemo } from 'react'
 
 function useGenerateLevel(level) {
   const [levelInfo] = useState(generateLevel(level))
   const dots = levelInfo.dots
   const [colorDefault, setColorDefault] = useState(getBaseColor())
-  const [state, setState] = useState(generateField(dots))
+  const [state] = useState(generateField(dots))
   const { gridMap, numColumn, numRow } = state
 
-  const regenerateState = useCallback(() => setState(generateField(dots)), [level])
+  const [boardState, setBoardState] = useState({})
 
   const [plainPallette, setPlainPallette] = useState([])
 
@@ -32,26 +38,61 @@ function useGenerateLevel(level) {
     setPlainPallette(newPallette)
   }, [gridMap])
 
-  const checkWinnerCondition = generateCheckWinner(levelInfo)
+  const [isWinner, setIsWinner] = useState(false)
+  useEffect(() => {
+    setIsWinner(checkWinnerCondition({ boardState }))
+  }, [boardState])
 
-  return { gridMap, numColumn, numRow, regenerateState, plainPallette, setPlainPallette, checkWinnerCondition }
+  const checkWinnerCondition = useMemo(() => generateCheckWinner(levelInfo), [levelInfo])
+
+  function changeColor() {
+    const newColor = getBaseColor()
+    setColorDefault(newColor)
+
+    setPlainPallette(changeColorFromOptionsState(plainPallette, newColor))
+    setBoardState(changeColorFromBoardState(boardState, newColor))
+  }
+
+  const [steps, setSteps] = useState(0)
+
+  useEffect(() => {
+    setSteps(steps + 1)
+    setIsWinner(checkWinnerCondition({ boardState }))
+  }, [boardState])
+
+  return {
+    gridMap,
+    numColumn,
+    numRow,
+    plainPallette,
+    setPlainPallette,
+    changeColor,
+    boardState,
+    setBoardState,
+    isWinner,
+    steps,
+  }
 }
 
 export function GamePage() {
   const { setNextLevel, setStep, level } = useGameState()
-  const { gridMap, numColumn, numRow, regenerateState, plainPallette, setPlainPallette, checkWinnerCondition } =
-    useGenerateLevel(level)
-
-  //const [pallette, setPalletteColor] = useState([])
-  const [boardState, setBoardState] = useState({})
-
-  const [steps, setSteps] = useState(0)
+  const {
+    gridMap,
+    numColumn,
+    numRow,
+    changeColor,
+    plainPallette,
+    setPlainPallette,
+    boardState,
+    setBoardState,
+    isWinner,
+    steps,
+  } = useGenerateLevel(level)
 
   const timerRef = useRef()
 
   useEffect(() => {
-    setSteps(steps + 1)
-    if (checkWinnerCondition({ boardState })) {
+    if (isWinner) {
       setNextLevel(
         calculatePoints({
           level: 8,
@@ -61,7 +102,7 @@ export function GamePage() {
       )
       setStep('started')
     }
-  }, [boardState])
+  }, [isWinner])
 
   function handleDragEnd(obj) {
     if (obj.collisions.length < 1) return
@@ -137,7 +178,7 @@ export function GamePage() {
           })}
         </div>
       </DndContext>
-      <button onClick={() => regenerateState()}>Recargar</button>
+      <button onClick={() => changeColor(boardState)}>Cambiar color</button>
     </main>
   )
 }

@@ -158,6 +158,33 @@ function getColorForThisPosition(baseColor, row, column) {
   return getMonochromePosition(getHueColor(baseColor, column), row)
 }
 
+export function changeColorFromBoardState(boardState, baseColor) {
+  const newBoardState = { ...boardState }
+
+  Object.keys(newBoardState).forEach(key => {
+    if (!newBoardState[key]) return
+
+    newBoardState[key] = {
+      ...newBoardState[key],
+      color: formatHex(getColorForThisPosition(baseColor, newBoardState[key].row, newBoardState[key].col)),
+    }
+  })
+
+  return newBoardState
+}
+
+export function changeColorFromOptionsState(optionsState = [], baseColor) {
+  return optionsState.map(option => {
+    if (option) {
+      return {
+        ...option,
+        color: formatHex(getColorForThisPosition(baseColor, option.row, option.col)),
+      }
+    }
+    return null
+  })
+}
+
 /**
  * @param {[]} gridMap
  * @param {{}} baseColor
