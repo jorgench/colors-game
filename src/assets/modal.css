@@ -1,0 +1,50 @@
+.modal-root {
+  position: relative;
+  z-index: 10;
+}
+
+.modal-root:focus {
+  outline: none;
+}
+
+.modal-background {
+  background-color: rgba(255, 255, 255, 0.05); /* bg-white/5 */
+  backdrop-filter: blur(40px); /* backdrop-blur-2xl */
+  position: fixed;
+  width: 100%;
+  overflow-y: 'auto';
+  top: 0;
+}
+
+.modal-center {
+  display: flex;
+  min-height: 100dvh;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+
+.modal-block {
+  width: 100%; /* w-full */
+  max-width: 28rem; /* max-w-md */
+  border-radius: 0.75rem; /* rounded-xl */
+  background-color: rgba(255, 255, 255, 0.05); /* bg-white/5 */
+  padding: 1.5rem; /* p-6 */
+  backdrop-filter: blur(40px); /* backdrop-blur-2xl */
+  transition: all 300ms ease-out; /* duration-300 and ease-out */
+}
+
+.modal-block[data-closed] {
+  transform: scale(0.95); /* data-[closed]:transform-[scale(95%)] */
+  opacity: 0; /* data-[closed]:opacity-0 */
+}
+
+
+.modal-block > *:nth-child(n + 1) {
+  margin-top: 1rem;
+}
+
+.modal-block > *:nth-child(1) {
+  margin-top: 0;
+}

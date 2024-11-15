@@ -135,7 +135,9 @@ button:active {
   padding: var(--size-m);
 }
 
-
+.text-center {
+  text-align: center;
+}
 
 .item-grid {
   border-bottom-left-radius: 0.5em 1em;

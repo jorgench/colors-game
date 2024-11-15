@@ -20,6 +20,7 @@ import { TimerInLevel } from '../components/TimerInLevel'
 import { useGameState } from '../store/game.state'
 import { useRef } from 'react'
 import { useMemo } from 'react'
+import { WinnerModal } from '../components/WinnerModal'
 
 function useGenerateLevel(level) {
   const [levelInfo] = useState(generateLevel(level))
@@ -91,16 +92,17 @@ export function GamePage() {
 
   const timerRef = useRef()
 
+  const [points, setPoints] = useState(0)
+
   useEffect(() => {
     if (isWinner) {
-      setNextLevel(
-        calculatePoints({
-          level: 8,
-          time: timerRef.current.getData(),
-          steps,
-        }),
-      )
-      setStep('started')
+      const newPoints = calculatePoints({
+        level: 8,
+        time: timerRef.current.getData(),
+        steps,
+      })
+      setPoints(newPoints)
+      setNextLevel(newPoints)
     }
   }, [isWinner])
 
@@ -129,10 +131,15 @@ export function GamePage() {
 
   console.log('rerender')
 
+  function nextLevel() {
+    setStep('started')
+  }
+
   return (
     <main className="container">
       Grid: {gridMap.length} {gridMap[0].length}
-      <TimerInLevel ref={timerRef} />
+      <WinnerModal isOpen={isWinner} points={points} onCallback={nextLevel} />
+      <TimerInLevel ref={timerRef} isActive={!isWinner} />
       <DndContext onDragEnd={handleDragEnd}>
         <div
           style={{
@@ -153,7 +160,7 @@ export function GamePage() {
                   style={{ gridColumn: y + 1, gridRow: x + 1 }}
                   data={{ row: x, col: y, kind: 'board' }}
                 >
-                  <GameBoxInside key={`${x},${y}`} item={boardState[`${x},${y}`]} x={x} y={y} />
+                  <GameBoxInsideBoard key={`${x},${y}`} item={boardState[`${x},${y}`]} x={x} y={y} />
                 </GameBox>
               ) : (
                 <></>
@@ -165,14 +172,7 @@ export function GamePage() {
           {plainPallette.map((item, i) => {
             return (
               <GameBox id={`item-${i}`} key={`item-${i}`} data={{ optionPlace: i, kind: 'option' }}>
-                {item ? (
-                  <GameColor
-                    key={i + item.color}
-                    id={item.color}
-                    data={{ ...item, place: { kind: 'option', key: i } }}
-                    color={item.color}
-                  />
-                ) : null}
+                <GameBoxInsideOption key={i + 'option'} item={item} index={i} />
               </GameBox>
             )
           })}
@@ -183,7 +183,7 @@ export function GamePage() {
   )
 }
 
-function GameBoxInside({ item, x, y }) {
+function GameBoxInsideBoard({ item, x, y }) {
   return item ? (
     <GameColor
       id={item.color}
@@ -191,5 +191,11 @@ function GameBoxInside({ item, x, y }) {
       color={item.color}
       isInCorrectPlace={item.col === y && item.row === x}
     />
+  ) : null
+}
+
+function GameBoxInsideOption({ item, index }) {
+  return item ? (
+    <GameColor id={item.color} data={{ ...item, place: { kind: 'option', key: index } }} color={item.color} />
   ) : null
 }

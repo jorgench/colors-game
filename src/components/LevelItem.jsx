@@ -1,4 +1,5 @@
 import { Icon } from '@iconify/react'
+import { LevelStarts } from './LevelStarts'
 
 export function LevelItem({ level = 1, points, onClick = () => [] }) {
   const levelPass = points > 0
@@ -18,11 +19,7 @@ export function LevelItem({ level = 1, points, onClick = () => [] }) {
 
   return (
     <div onClick={onClick} style={style}>
-      <div>
-        {new Array(3).fill().map((_, i) => {
-          return points > i * 333 ? <Icon key={i} icon="mynaui:star-solid" /> : <Icon key={i} icon="mynaui:star" />
-        })}
-      </div>
+      <LevelStarts points={points} />
       <div style={{ alignSelf: 'flex-end' }}>{level}</div>
     </div>
   )
