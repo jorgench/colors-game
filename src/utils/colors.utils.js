@@ -9,8 +9,8 @@ function getMonochromePosition(baseColor, move) {
   let j = Math.abs(move) + 1
   if (move < 0) {
     return {
-      l: baseColor.l + j * 4.75,
-      c: baseColor.c + j * 8,
+      l: baseColor.l + j * 5.75,
+      c: baseColor.c + j * 10,
       h: adjustHue(baseColor.h),
       mode: 'lch',
     }
@@ -81,7 +81,7 @@ function mapColor(n, start1, end1, start2, end2) {
 
 function generateHue({ base, minLightness, maxLightness, hueStep }) {
   return (move, steps) => {
-    const hue = move > 0 ? adjustHue(base.h + hueStep * move) : adjustHue(base.h - hueStep * move)
+    const hue = move > 0 ? adjustHue(base.h + steps * move) : adjustHue(base.h - steps * move)
     const lightness =
       move > 0 ? mapColor(move, 0, steps, base.l, maxLightness) : mapColor(move, 0, steps, base.l, minLightness)
 
@@ -123,7 +123,7 @@ function createHueShiftPalette({ base, minLightness, maxLightness, hueStep, step
 }
 
 function getHueColor(baseColor, position) {
-  return generateHue({ base: baseColor, minLightness: 30, maxLightness: 90, hueStep: 10, steps: 4 })(position, 4)
+  return generateHue({ base: baseColor, minLightness: 30, maxLightness: 90 })(position, 40)
 }
 
 const lchConvert = converter('lch')

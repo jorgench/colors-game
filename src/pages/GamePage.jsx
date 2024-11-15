@@ -1,5 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
-import { calculatePoints, generateField } from '../utils/level.utils'
+import {
+  calculatePoints,
+  generateCheckWinner,
+  generateField,
+  generateInitialOptions,
+  generateLevel,
+  moveItemInLevel,
+} from '../utils/level.utils'
 import { createPallette, getBaseColor } from '../utils/colors.utils'
 import { GameBox } from '../components/GameBox'
 import { GameColor } from '../components/GameColor'
@@ -8,49 +15,46 @@ import { TimerInLevel } from '../components/TimerInLevel'
 import { useGameState } from '../store/game.state'
 import { useRef } from 'react'
 
-function useGenerateLevel(dots) {
+function useGenerateLevel(level) {
+  const [levelInfo] = useState(generateLevel(level))
+  const dots = levelInfo.dots
+  const [colorDefault, setColorDefault] = useState(getBaseColor())
   const [state, setState] = useState(generateField(dots))
   const { gridMap, numColumn, numRow } = state
 
-  const regenerateState = useCallback(() => setState(generateField(dots)), [dots])
+  const regenerateState = useCallback(() => setState(generateField(dots)), [level])
 
-  return { gridMap, numColumn, numRow, regenerateState }
+  const [plainPallette, setPlainPallette] = useState([])
+
+  useEffect(() => {
+    const pallette = createPallette(gridMap, colorDefault)
+    const newPallette = generateInitialOptions(pallette)
+    setPlainPallette(newPallette)
+  }, [gridMap])
+
+  const checkWinnerCondition = generateCheckWinner(levelInfo)
+
+  return { gridMap, numColumn, numRow, regenerateState, plainPallette, setPlainPallette, checkWinnerCondition }
 }
 
 export function GamePage() {
-  const { setNextLevel, setStep } = useGameState()
-  const { gridMap, numColumn, numRow, regenerateState } = useGenerateLevel(4)
-  const [colorDefault, setColorDefault] = useState(getBaseColor())
+  const { setNextLevel, setStep, level } = useGameState()
+  const { gridMap, numColumn, numRow, regenerateState, plainPallette, setPlainPallette, checkWinnerCondition } =
+    useGenerateLevel(level)
+
   //const [pallette, setPalletteColor] = useState([])
   const [boardState, setBoardState] = useState({})
-
-  const [plainPallette, setPlainPallette] = useState([])
 
   const [steps, setSteps] = useState(0)
 
   const timerRef = useRef()
 
   useEffect(() => {
-    const pallette = createPallette(gridMap, colorDefault)
-    const newPallette = pallette.reduce((prev, row, x) => {
-      if (!row) return prev
-      row.forEach((col, y) => {
-        if (col) {
-          prev.push({ color: col, row: x, col: y })
-        }
-      })
-      return prev
-    }, [])
-
-    setPlainPallette(newPallette)
-  }, [gridMap, colorDefault])
-
-  useEffect(() => {
     setSteps(steps + 1)
-    if (checkWinnerCondition()) {
+    if (checkWinnerCondition({ boardState })) {
       setNextLevel(
         calculatePoints({
-          level: 4,
+          level: 8,
           time: timerRef.current.getData(),
           steps,
         }),
@@ -66,59 +70,22 @@ export function GamePage() {
     const boxData = obj.collisions[0].data.droppableContainer.data.current
 
     const copyBoardState = { ...boardState }
-
-    if (boxData.kind === 'option') {
-      const copyPlainPallette = [...plainPallette]
-      const optionPallette = copyPlainPallette[boxData.optionPlace]
-
-      if (!optionPallette) {
-        copyPlainPallette[boxData.optionPlace] = { ...colorData }
-
-        if (colorData?.place?.kind === 'option') {
-          copyPlainPallette[`${colorData.place.key}`] = null
-        } else {
-          copyBoardState[`${colorData.place.key}`] = null
-          setBoardState(copyBoardState)
-        }
-        setPlainPallette(copyPlainPallette)
-      }
-    } else {
-      if (copyBoardState[`${boxData.row},${boxData.col}`]) {
-        return
-      }
-
-      copyBoardState[`${boxData.row},${boxData.col}`] = { ...colorData }
-
-      if (colorData?.place?.kind === 'board') {
-        copyBoardState[`${colorData.place.key}`] = null
-        setBoardState(copyBoardState)
-      } else {
-        setBoardState(copyBoardState)
-        removeItemFromPallette(colorData)
-      }
-    }
-  }
-
-  function removeItemFromPallette(colorData) {
     const copyPlainPallette = [...plainPallette]
-    const ind = copyPlainPallette.findIndex(item => {
-      return item?.color === colorData.color
-    })
-    copyPlainPallette[ind] = null
-    setPlainPallette(copyPlainPallette)
-  }
 
-  function checkWinnerCondition() {
-    console.log(boardState, steps)
-
-    const keys = Object.keys(boardState)
-    const winner = keys.every(key => {
-      const value = boardState[key]
-      return value && key === `${value.row},${value.col}`
+    const newPositions = moveItemInLevel({
+      boardState: copyBoardState,
+      optionsState: copyPlainPallette,
+      colorData,
+      placeData: boxData,
     })
 
-    return winner && keys.length === 4
+    if (newPositions) {
+      setBoardState(newPositions.boardState)
+      setPlainPallette(newPositions.optionsState)
+    }
+    return
   }
+
   console.log('rerender')
 
   return (
@@ -145,15 +112,7 @@ export function GamePage() {
                   style={{ gridColumn: y + 1, gridRow: x + 1 }}
                   data={{ row: x, col: y, kind: 'board' }}
                 >
-                  {boardState[`${x},${y}`] ? (
-                    <GameColor
-                      key={boardState[`${x},${y}`].color}
-                      id={boardState[`${x},${y}`].color}
-                      data={{ ...boardState[`${x},${y}`], place: { kind: 'board', key: `${x},${y}` } }}
-                      color={boardState[`${x},${y}`].color}
-                      isInCorrectPlace={boardState[`${x},${y}`].col === y && boardState[`${x},${y}`].row === x}
-                    />
-                  ) : null}
+                  <GameBoxInside key={`${x},${y}`} item={boardState[`${x},${y}`]} x={x} y={y} />
                 </GameBox>
               ) : (
                 <></>
@@ -181,4 +140,15 @@ export function GamePage() {
       <button onClick={() => regenerateState()}>Recargar</button>
     </main>
   )
+}
+
+function GameBoxInside({ item, x, y }) {
+  return item ? (
+    <GameColor
+      id={item.color}
+      data={{ ...item, place: { kind: 'board', key: `${x},${y}` } }}
+      color={item.color}
+      isInCorrectPlace={item.col === y && item.row === x}
+    />
+  ) : null
 }

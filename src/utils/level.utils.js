@@ -1,9 +1,3 @@
-const levelConsts = {
-  colorsIngrid: [4, 6, 10, 16, 22],
-  distanceInHue: [20, 30, 40, 50, 60, 70],
-  distanceMonochrome: [5, 4, 3, 2, 1],
-}
-
 function generatePath(spaces) {
   const savedPosition = {}
   const directions = [
@@ -76,6 +70,70 @@ export function generateField(steps) {
   }
 }
 
+/**
+ * @param {{level: import("./level").Level, }} param0
+ * @returns
+ */
+export function generateCalculatePoints({ level }) {
+  const { maxPoints, minMovements, timePenalizationFactor, movePenalizationFactor } = level
+
+  return function calculatePoints({ time, steps }) {
+    const levelStart = maxPoints
+    const additionalMoves = steps - minMovements
+
+    const points = levelStart / (1 + time / timePenalizationFactor) - additionalMoves * movePenalizationFactor
+    return Math.ceil(points)
+  }
+}
+
+const levelConst = {
+  colorsIngrid: [4, 5, 6, 8, 10, 12, 14, 16],
+  distanceInHue: [20, 30, 40, 50, 60, 70],
+  distanceMonochrome: [5, 4, 3, 2, 1],
+}
+
+/**
+ * @param {number} level
+ * @returns {Level}
+ */
+export function generateLevel(level) {
+  const separateBlock = 15
+  const indBlock = Math.floor((level - 1) / separateBlock) // Nivel 1 comienza en el bloque 0
+  const indInside = (level - 1) % separateBlock
+
+  // Configurar una base de dots para los primeros niveles
+  const initialDots = 4 // Mantener 4 dots en los primeros niveles
+  let dotsInLevel
+
+  if (level <= separateBlock) {
+    dotsInLevel = initialDots // Usar valor base de dots para niveles hasta `separateBlock`
+  } else {
+    // Aumentar `dots` en bloques más altos según el valor de `colorsIngrid`
+    const colorOptions = levelConst.colorsIngrid.slice(Math.max(0, indBlock + 1 - 3), indBlock + 1)
+    dotsInLevel = colorOptions[Math.min(indInside, colorOptions.length - 1)]
+  }
+
+  // Definir movimientos mínimos y puntos máximos
+  const minMovements = dotsInLevel
+  const maxPoints = 4000 + level * 20
+
+  // Definir penalizaciones en función del nivel
+  const movePenalizationFactor = 1 + level * 0.05
+  const timePenalizationFactor = 1 + level * 0.03
+
+  const result = {
+    name: level,
+    dots: dotsInLevel,
+    minMovements,
+    maxPoints,
+    movePenalizationFactor,
+    timePenalizationFactor,
+  }
+
+  console.log(result)
+  return result
+}
+
 export function calculatePoints({ level, time, steps }) {
   const levelStart = 1000
   const timePenalization = 10
@@ -85,4 +143,79 @@ export function calculatePoints({ level, time, steps }) {
 
   const points = levelStart / (1 + time / timePenalization) - additionalMoves * movePenalization
   return Math.ceil(points)
+}
+
+export function generateInitialOptions(pallette) {
+  return pallette
+    .reduce((prev, row, x) => {
+      if (!row) return prev
+      row.forEach((col, y) => {
+        if (col) {
+          prev.push({ color: col, row: x, col: y })
+        }
+      })
+      return prev
+    }, [])
+    .sort(() => Math.random() - 0.5)
+}
+
+export function generateCheckWinner(level) {
+  return ({ boardState }) => {
+    const keys = Object.keys(boardState)
+    const winner = keys.every(key => {
+      const value = boardState[key]
+      return value && key === `${value.row},${value.col}`
+    })
+    return winner && keys.length === level.dots
+  }
+}
+
+export function moveItemInLevel({ boardState, optionsState, placeData, colorData }) {
+  if (placeData.kind === 'option') {
+    return movePositionInOptions({ boardState, optionsState, placeData, colorData })
+  } else {
+    return movePositionInBoard({ boardState, optionsState, placeData, colorData })
+  }
+}
+
+function movePositionInOptions({ boardState, optionsState, placeData, colorData }) {
+  if (optionsState[placeData.optionPlace]) {
+    return
+  }
+
+  optionsState[placeData.optionPlace] = colorData
+
+  if (colorData?.place?.kind === 'option') {
+    optionsState[colorData.place.key] = null
+  } else {
+    boardState[`${colorData.place.key}`] = null
+  }
+
+  return {
+    optionsState,
+    boardState,
+  }
+}
+
+function movePositionInBoard({ boardState, optionsState, placeData, colorData }) {
+  if (boardState[`${placeData.row},${placeData.col}`]) {
+    return
+  }
+
+  boardState[`${placeData.row},${placeData.col}`] = { ...colorData }
+  if (colorData?.place?.kind === 'board') {
+    boardState[`${colorData.place.key}`] = null
+  } else {
+    if (colorData?.place?.kind !== 'board') {
+      const ind = optionsState.findIndex(item => {
+        return item?.color === colorData.color
+      })
+      optionsState[ind] = null
+    }
+  }
+
+  return {
+    optionsState,
+    boardState,
+  }
 }
