@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { LevelItem } from '../components/LevelItem'
 import { useGameState } from '../store/game.state'
+import { generateLevel } from '../utils/level.utils'
 
 export function LevelsPage() {
-  const { setStep, pointsHistory } = useGameState()
-  const [page, setPage] = useState(1)
-
   const allLevels = 25
+  const { setStep, pointsHistory, level } = useGameState()
+  const [page, setPage] = useState(Math.ceil((level + 1) / allLevels))
+
   const itemsPerPage = Array(allLevels)
     .fill(null)
     .map((_, i) => {
@@ -14,7 +15,7 @@ export function LevelsPage() {
     })
 
   function openLevel(level) {
-    console.log('New Level ', level)
+    console.log('New Level ', generateLevel(level))
     setStep()
   }
 
@@ -39,10 +40,10 @@ export function LevelsPage() {
           justifyContent: 'center',
         }}
       >
-        {itemsPerPage.map((level, k) => {
+        {itemsPerPage.map(level => {
           return (
             <div className="item-grid" key={`level-${level}`}>
-              <LevelItem level={level} points={pointsHistory[k]} onClick={() => openLevel(level)} />
+              <LevelItem level={level} points={pointsHistory[level - 1]} onClick={() => openLevel(level)} />
             </div>
           )
         })}
