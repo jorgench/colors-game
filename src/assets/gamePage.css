@@ -1,0 +1,36 @@
+.game-page {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--size-s);
+}
+
+.game-page-options {
+  text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--size-s)
+}
+
+.game-page-board {
+  display: grid;
+  gap: var(--size-s);
+  align-content: center;
+  justify-content: center;
+}
+
+.game-page-center {
+  display: grid;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: end;
+  gap: var(--size-l);
+}
+
+.game-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

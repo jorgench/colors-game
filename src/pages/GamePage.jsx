@@ -22,8 +22,12 @@ import { useRef } from 'react'
 import { useMemo } from 'react'
 import { WinnerModal } from '../components/WinnerModal'
 
+import '../assets/gamePage.css'
+import { Icon } from '@iconify/react/dist/iconify.js'
+
 function useGenerateLevel(level) {
   const [levelInfo] = useState(generateLevel(level))
+  console.log('levelInfo')
   const dots = levelInfo.dots
   const [colorDefault, setColorDefault] = useState(getBaseColor())
   const [state] = useState(generateField(dots))
@@ -97,7 +101,7 @@ export function GamePage() {
   useEffect(() => {
     if (isWinner) {
       const newPoints = calculatePoints({
-        level: 8,
+        level,
         time: timerRef.current.getData(),
         steps,
       })
@@ -136,49 +140,72 @@ export function GamePage() {
   }
 
   return (
-    <main className="container">
-      Grid: {gridMap.length} {gridMap[0].length}
+    <main className="container game-page">
+      <div className="game-page-header ">
+        {/*Grid: {gridMap.length} {gridMap[0].length}*/}
+        <TimerInLevel ref={timerRef} isActive={!isWinner} />
+        <h4 className="title h4">Nivel {level}</h4>
+        <Icon icon="mynaui:logout" />
+      </div>
+
       <WinnerModal isOpen={isWinner} points={points} onCallback={nextLevel} />
-      <TimerInLevel ref={timerRef} isActive={!isWinner} />
-      <DndContext onDragEnd={handleDragEnd}>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: `repeat(${numColumn}, var(--size-box))`,
-            gridTemplateRows: `repeat(${numRow}, var(--size-box))`,
-            gap: '1rem',
-            alignContent: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {gridMap.map((rows, x) => {
-            return rows.map((col, y) => {
-              return col ? (
-                <GameBox
-                  id={`item-${x}-${y}`}
-                  key={`item-${x}-${y}`}
-                  style={{ gridColumn: y + 1, gridRow: x + 1 }}
-                  data={{ row: x, col: y, kind: 'board' }}
-                >
-                  <GameBoxInsideBoard key={`${x},${y}`} item={boardState[`${x},${y}`]} x={x} y={y} />
+
+      <section className="game-page-center">
+        <DndContext onDragEnd={handleDragEnd}>
+          <div
+            className="game-page-board"
+            style={{
+              gridTemplateColumns: `repeat(${numColumn}, var(--size-box))`,
+              gridTemplateRows: `repeat(${numRow}, var(--size-box))`,
+            }}
+          >
+            {gridMap.map((rows, x) => {
+              return rows.map((col, y) => {
+                return col ? (
+                  <GameBox
+                    id={`item-${x}-${y}`}
+                    key={`item-${x}-${y}`}
+                    style={{ gridColumn: y + 1, gridRow: x + 1 }}
+                    data={{ row: x, col: y, kind: 'board' }}
+                  >
+                    <GameBoxInsideBoard key={`${x},${y}`} item={boardState[`${x},${y}`]} x={x} y={y} />
+                  </GameBox>
+                ) : (
+                  <></>
+                )
+              })
+            })}
+          </div>
+          <div className="game-page-options">
+            {plainPallette.map((item, i) => {
+              return (
+                <GameBox id={`item-${i}`} key={`item-${i}`} data={{ optionPlace: i, kind: 'option' }}>
+                  <GameBoxInsideOption key={i + 'option'} item={item} index={i} />
                 </GameBox>
-              ) : (
-                <></>
               )
-            })
-          })}
+            })}
+          </div>
+        </DndContext>
+      </section>
+      <div>
+        <button onClick={() => changeColor(boardState)}>Cambiar color</button>
+
+        <div>
+          <div onClick={() => changeColor(boardState)}>
+            <Icon icon="mynaui:chevron-left" />
+          </div>
+          <div onClick={() => changeColor(boardState)}>
+            <Icon icon="mynaui:refresh-alt" />
+          </div>
+          <div onClick={() => changeColor(boardState)}>
+            <Icon icon="mynaui:chevron-right" />
+          </div>
         </div>
-        <div style={{ display: 'flex', gap: '1em' }}>
-          {plainPallette.map((item, i) => {
-            return (
-              <GameBox id={`item-${i}`} key={`item-${i}`} data={{ optionPlace: i, kind: 'option' }}>
-                <GameBoxInsideOption key={i + 'option'} item={item} index={i} />
-              </GameBox>
-            )
-          })}
+
+        <div onClick={() => changeColor(boardState)}>
+          <Icon icon="mynaui:cog-four-solid" />
         </div>
-      </DndContext>
-      <button onClick={() => changeColor(boardState)}>Cambiar color</button>
+      </div>
     </main>
   )
 }
