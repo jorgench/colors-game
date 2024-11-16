@@ -145,7 +145,9 @@ export function GamePage() {
         {/*Grid: {gridMap.length} {gridMap[0].length}*/}
         <TimerInLevel ref={timerRef} isActive={!isWinner} />
         <h4 className="title h4">Nivel {level}</h4>
-        <Icon icon="mynaui:logout" />
+        <div style={{ fontSize: 'var(--size-m)' }}>
+          <Icon icon="mynaui:logout" />
+        </div>
       </div>
 
       <WinnerModal isOpen={isWinner} points={points} onCallback={nextLevel} />
@@ -187,14 +189,12 @@ export function GamePage() {
           </div>
         </DndContext>
       </section>
-      <div>
-        <button onClick={() => changeColor(boardState)}>Cambiar color</button>
-
-        <div>
+      <div className="game-page-footer">
+        <div className="game-page-settings">
           <div onClick={() => changeColor(boardState)}>
             <Icon icon="mynaui:chevron-left" />
           </div>
-          <div onClick={() => changeColor(boardState)}>
+          <div className="big-option" onClick={() => changeColor(boardState)}>
             <Icon icon="mynaui:refresh-alt" />
           </div>
           <div onClick={() => changeColor(boardState)}>
@@ -202,7 +202,7 @@ export function GamePage() {
           </div>
         </div>
 
-        <div onClick={() => changeColor(boardState)}>
+        <div style={{ fontSize: 'var(--size-m)' }} onClick={() => changeColor(boardState)}>
           <Icon icon="mynaui:cog-four-solid" />
         </div>
       </div>

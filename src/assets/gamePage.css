@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: var(--size-s);
+  gap: var(--size-m);
 }
 
 .game-page-options {
@@ -33,4 +33,29 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.game-page-settings {
+  display: flex;
+  align-items: center;
+  gap: var(--size-s);
+  font-size: var(--size-m);
+}
+
+.game-page-settings > .big-option {
+  font-size: 1.5em;
+}
+
+.game-page-footer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto;
+  align-items: center;
+  justify-items: center;
+  gap: var(--size-s)
+}
+
+.game-page-footer > .game-page-settings {
+  grid-column: span 2;
+  grid-row: 1;
 }
