@@ -5,7 +5,7 @@ import { generateLevel } from '../utils/level.utils'
 
 export function LevelsPage() {
   const allLevels = 25
-  const { setStep, pointsHistory, level } = useGameState()
+  const { setLevel, pointsHistory, level } = useGameState()
   const [page, setPage] = useState(Math.ceil((level + 1) / allLevels))
 
   const itemsPerPage = Array(allLevels)
@@ -16,7 +16,7 @@ export function LevelsPage() {
 
   function openLevel(level) {
     console.log('New Level ', generateLevel(level))
-    setStep()
+    setLevel(level)
   }
 
   function changePage(newPage) {

@@ -21,6 +21,12 @@ export const useGameState = create(
             pointsHistory: [...state.pointsHistory, points],
           }))
         },
+        setLevel(currentLevel) {
+          set(() => ({
+            level: currentLevel,
+            gameStep: 'finish',
+          }))
+        },
         setPlayer(name = '') {
           if (name === '') return
           set(() => ({
