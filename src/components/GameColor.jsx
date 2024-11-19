@@ -28,7 +28,16 @@ export function GameColor({ id, children, color, data, isInCorrectPlace = false 
   return isInCorrectPlace ? (
     <div style={style}>
       {children}
-      <div style={{ background: 'rgba(0,0,0,0.5)', borderRadius: '50%', width: '1em', height: '1em', display: 'flex' }}>
+      <div
+        style={{
+          background: 'rgba(0,0,0,0.5)',
+          borderRadius: '50%',
+          width: '1em',
+          height: '1em',
+          display: 'flex',
+          color: 'var(--white-color)',
+        }}
+      >
         <Icon icon="mynaui:check" />
       </div>
     </div>

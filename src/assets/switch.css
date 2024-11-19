@@ -1,0 +1,62 @@
+.switch label{
+  position: relative;
+
+}
+
+.switch input {
+  appearance: none;
+  position: relative;
+  border: 1px solid var(--default-color);
+  border-radius: 1rem;
+  min-width: 2.5rem;
+  min-height: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.switch input::after {
+  display: block;
+  content: '';
+  height: 1rem;
+  width: 1rem;
+  border-radius: 50%;
+  border: 1px solid var(--default-color);
+  background-color: var(--default-surface);
+  position: absolute;
+  transform: translateX(0.2rem);
+  transition: all 0.2s ease-in-out;
+}
+
+
+.switch input:checked::after {
+  transform: translateX(1.2rem); 
+}
+
+.switch-icons {
+  display: flex;
+  top: 0;
+  left: 1.75rem;
+  position: absolute;
+  height: 100%;
+  width: 1rem;
+  align-items: center;
+  font-size: 0.75em;
+}
+
+.switch input:checked + .switch-icons {
+  left: 0.5rem;
+}
+
+.switch-icons > svg {
+  animation: rotate 0.35s ease-in-out;
+}
+
+@keyframes rotate {
+  0%{
+    transform: rotateZ(90deg);
+  }
+  100%{
+    transform: rotateZ(0deg);
+  }
+}
