@@ -1,4 +1,3 @@
-import { Icon } from '@iconify/react'
 import { LevelStarts } from './LevelStarts'
 
 export function LevelItem({ level = 1, points, onClick = () => [] }) {

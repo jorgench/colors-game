@@ -17,8 +17,7 @@ export const useGameState = create(
         setNextLevel(points = 0) {
           if (points < 1) return
           set(state => ({
-            level: (state.level += 1),
-            pointsHistory: [...state.pointsHistory, points],
+            pointsHistory: [...state.pointsHistory, { level: state.level + 1, points }],
           }))
         },
         setLevel(currentLevel) {
@@ -38,6 +37,25 @@ export const useGameState = create(
           set(() => ({
             gameStep: step,
           }))
+        },
+        moveToLevel(newCurrentLevel) {
+          set(state => {
+            if (newCurrentLevel <= 0) {
+              return { level: state.level }
+            }
+
+            const points = state.pointsHistory
+            const maxLevel = points[points.length - 1]?.level
+
+            console.log('Points:', maxLevel, newCurrentLevel)
+            if (maxLevel === undefined || newCurrentLevel > maxLevel) {
+              return { level: state.level }
+            }
+
+            console.log('MOVE TO LEVEL???', newCurrentLevel)
+
+            return { level: newCurrentLevel }
+          })
         },
       }
     },

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { LevelItem } from '../components/LevelItem'
 import { useGameState } from '../store/game.state'
 import { generateLevel } from '../utils/level.utils'
+import { PageLayout } from '../layout/PageLayout'
 
 export function LevelsPage() {
   const allLevels = 25
@@ -26,33 +27,35 @@ export function LevelsPage() {
   }
 
   return (
-    <main className="container page">
-      <h1 className="title">
-        Nivel {page}-{allLevels * page}
-      </h1>
+    <PageLayout>
+      <main className="container page">
+        <h1 className="title">
+          Nivel {page}-{allLevels * page}
+        </h1>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(5, var(--size-box))',
-          gap: '1rem',
-          alignContent: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        {itemsPerPage.map(level => {
-          return (
-            <div className="item-grid" key={`level-${level}`}>
-              <LevelItem level={level} points={pointsHistory[level - 1]} onClick={() => openLevel(level)} />
-            </div>
-          )
-        })}
-      </div>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(5, var(--size-box))',
+            gap: '1rem',
+            alignContent: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {itemsPerPage.map(level => {
+            return (
+              <div className="item-grid" key={`level-${level}`}>
+                <LevelItem level={level} points={pointsHistory[level - 1]?.points} onClick={() => openLevel(level)} />
+              </div>
+            )
+          })}
+        </div>
 
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-        <button onClick={() => changePage(page - 1)}>Anterior</button>
-        <button onClick={() => changePage(page + 1)}>Siguiente</button>
-      </div>
-    </main>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+          <button onClick={() => changePage(page - 1)}>Anterior</button>
+          <button onClick={() => changePage(page + 1)}>Siguiente</button>
+        </div>
+      </main>
+    </PageLayout>
   )
 }
