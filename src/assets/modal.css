@@ -48,3 +48,8 @@
 .modal-block > *:nth-child(1) {
   margin-top: 0;
 }
+
+.modal-options {
+  display: flex;
+  justify-content: space-between;
+}

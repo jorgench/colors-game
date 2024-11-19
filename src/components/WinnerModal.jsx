@@ -3,7 +3,7 @@ import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import '../assets/modal.css'
 import { LevelStarts } from './LevelStarts'
 
-export function WinnerModal({ isOpen = false, points, onCallback = () => {} }) {
+export function WinnerModal({ isOpen = false, points, onCallback = () => {}, onNextLevelPress = () => {} }) {
   return (
     <Dialog open={isOpen} as="div" className="modal-root" onClose={() => onCallback()}>
       <div className="modal-background">
@@ -16,9 +16,9 @@ export function WinnerModal({ isOpen = false, points, onCallback = () => {} }) {
               <LevelStarts points={points} animated={true} />
               {points} pts
             </div>
-            <div>
+            <div className="modal-options">
               <Button onClick={() => onCallback()}>Regresar</Button>
-              <Button onClick={() => onCallback()}>Siguiente Nivel</Button>
+              <Button onClick={() => onNextLevelPress()}>Siguiente Nivel</Button>
             </div>
           </DialogPanel>
         </div>

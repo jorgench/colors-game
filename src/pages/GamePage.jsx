@@ -158,7 +158,7 @@ export function GamePage() {
           </div>
         </div>
 
-        <WinnerModal isOpen={isWinner} points={points} onCallback={nextLevel} />
+        <WinnerModal isOpen={isWinner} points={points} onCallback={goToHome} onNextLevelPress={nextLevel} />
 
         <section className="game-page-center">
           <DndContext onDragEnd={handleDragEnd}>
