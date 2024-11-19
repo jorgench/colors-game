@@ -27,7 +27,7 @@ import { Icon } from '@iconify/react/dist/iconify.js'
 
 function useGenerateLevel(level) {
   const [levelInfo] = useState(generateLevel(level))
-  console.log('levelInfo')
+
   const dots = levelInfo.dots
   const [colorDefault, setColorDefault] = useState(getBaseColor())
   const [state] = useState(generateField(dots))
@@ -95,8 +95,8 @@ export function GamePage() {
   } = useGenerateLevel(level)
 
   const timerRef = useRef()
-
   const [points, setPoints] = useState(0)
+  const [localLevel] = useState(level)
 
   useEffect(() => {
     if (isWinner) {
@@ -144,7 +144,7 @@ export function GamePage() {
       <div className="game-page-header ">
         {/*Grid: {gridMap.length} {gridMap[0].length}*/}
         <TimerInLevel ref={timerRef} isActive={!isWinner} />
-        <h4 className="title h4">Nivel {level}</h4>
+        <h4 className="title h4">Nivel {localLevel}</h4>
         <div style={{ fontSize: 'var(--size-m)' }}>
           <Icon icon="mynaui:logout" />
         </div>
