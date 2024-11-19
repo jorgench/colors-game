@@ -190,23 +190,32 @@ export function GamePage() {
         </DndContext>
       </section>
       <div className="game-page-footer">
-        <div className="game-page-settings">
-          <div onClick={() => changeColor(boardState)}>
-            <Icon icon="mynaui:chevron-left" />
-          </div>
-          <div className="big-option" onClick={() => changeColor(boardState)}>
-            <Icon icon="mynaui:refresh-alt" />
-          </div>
-          <div onClick={() => changeColor(boardState)}>
-            <Icon icon="mynaui:chevron-right" />
-          </div>
-        </div>
-
-        <div style={{ fontSize: 'var(--size-m)' }} onClick={() => changeColor(boardState)}>
+        <GameControls onChangeColor={() => changeColor(boardState)} />
+        <div
+          className="game-page-settings-right"
+          style={{ fontSize: 'var(--size-m)' }}
+          onClick={() => changeColor(boardState)}
+        >
           <Icon icon="mynaui:cog-four-solid" />
         </div>
       </div>
     </main>
+  )
+}
+
+function GameControls({ onChangeColor = () => {} }) {
+  return (
+    <div className="game-page-settings">
+      <div onClick={() => onChangeColor()}>
+        <Icon icon="mynaui:chevron-left" />
+      </div>
+      <div className="big-option" onClick={() => onChangeColor()}>
+        <Icon icon="mynaui:refresh-alt" />
+      </div>
+      <div onClick={() => onChangeColor()}>
+        <Icon icon="mynaui:chevron-right" />
+      </div>
+    </div>
   )
 }
 

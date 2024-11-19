@@ -56,6 +56,11 @@
 }
 
 .game-page-footer > .game-page-settings {
-  grid-column: span 2;
+  grid-column: 1/-1;
   grid-row: 1;
+}
+
+.game-page-footer > .game-page-settings-right {
+  grid-row: 1;
+  grid-column: 2;
 }
