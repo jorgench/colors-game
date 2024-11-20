@@ -21,6 +21,10 @@
   --secondary-surface: #D5B942;
   --secondary-color: var(--black-color);
 
+  --logo-color-1: #329F5B;
+  --logo-color-2: #166088;
+  --logo-color-3: var(--primary-surface);
+
 
   --size-base: 1rem;
   --size-xs: 0.5rem;
@@ -46,6 +50,9 @@
     --primary-color: var(--black-color);
     --secondary-surface: #F6AE2D;
     --secondary-color: var(--black-color);
+    --logo-color-1: #D90368;
+    --logo-color-2: #5BC0EB;
+    --logo-color-3: var(--primary-surface);
 
     --transparent-surface-color: rgba(0,0,0,0.5);
   }
@@ -61,6 +68,9 @@
     --primary-color: var(--black-color);
     --secondary-surface: #F6AE2D;
     --secondary-color: var(--black-color);
+    --logo-color-1: #D90368;
+    --logo-color-2: #5BC0EB;
+    --logo-color-3: var(--primary-surface);
 
     --transparent-surface-color: rgba(0,0,0,0.5);
 }
@@ -75,12 +85,17 @@
   --secondary-surface: #D5B942;
   --secondary-color: var(--black-color);
 
+  --logo-color-1: #F0A6CA ;
+  --logo-color-2: #3185FC;
+  --logo-color-3: var(--primary-surface);
+
   --transparent-surface-color: rgba(0,0,0,0.2);
 }
 
 body {
   background-color: var(--default-surface);
   color: var(--default-color);
+  transition: all 0.2s;
 }
 
 a {
