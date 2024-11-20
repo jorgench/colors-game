@@ -1,0 +1,24 @@
+.level-item {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5em;
+  box-sizing: border-box;
+  padding: 0.5em;
+  background: transparent;
+  color: var(--default-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.35s ease;
+}
+
+.level-pass {
+  background: var(--secondary-surface);
+  color: var(--secondary-color);
+}
+
+
+.level-option:hover, .level-option:focus {
+  transform: scale(1.05);
+  cursor: pointer;
+}

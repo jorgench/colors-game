@@ -12,7 +12,14 @@ export function LevelsPage() {
   const itemsPerPage = Array(allLevels)
     .fill(null)
     .map((_, i) => {
-      return i + 1 + allLevels * (page - 1)
+      const level = i + 1 + allLevels * (page - 1)
+      const points = pointsHistory[level - 1]?.points ?? 0
+
+      return {
+        name: level,
+        points: pointsHistory[level - 1]?.points,
+        canSelected: points > 0 || level === pointsHistory.length + 1,
+      }
     })
 
   function openLevel(level) {
@@ -44,8 +51,13 @@ export function LevelsPage() {
         >
           {itemsPerPage.map(level => {
             return (
-              <div className="item-grid" key={`level-${level}`}>
-                <LevelItem level={level} points={pointsHistory[level - 1]?.points} onClick={() => openLevel(level)} />
+              <div className="item-grid" key={`level-${level.name}`}>
+                <LevelItem
+                  level={level.name}
+                  points={level.points}
+                  canSelected={level.canSelected}
+                  onClick={() => openLevel(level.name)}
+                />
               </div>
             )
           })}

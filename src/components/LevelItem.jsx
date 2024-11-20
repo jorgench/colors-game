@@ -1,23 +1,16 @@
 import { LevelStarts } from './LevelStarts'
 
-export function LevelItem({ level = 1, points, onClick = () => [] }) {
+import '../assets/levelItem.css'
+
+export function LevelItem({ level = 1, points, canSelected = false, onClick = () => [] }) {
   const levelPass = points > 0
 
-  const style = {
-    width: '100%',
-    height: '100%',
-    borderRadius: '0.5em',
-    boxSizing: 'borderBox',
-    padding: '0.5em',
-    background: levelPass ? 'var(--secondary-surface)' : 'transparent',
-    color: levelPass ? 'var(--secondary-color)' : 'var(--default-color)',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-  }
+  const className = ['level-item', levelPass ? 'level-pass' : null, canSelected ? 'level-option' : null]
+    .filter(a => Boolean(a))
+    .join(' ')
 
   return (
-    <div onClick={onClick} style={style}>
+    <div onClick={onClick} className={className} role={canSelected ? 'button' : null} tabIndex={canSelected ? 0 : null}>
       <LevelStarts points={points} />
       <div style={{ alignSelf: 'flex-end' }}>{level}</div>
     </div>
