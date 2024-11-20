@@ -23,7 +23,6 @@ import { useMemo } from 'react'
 import { WinnerModal } from '../components/WinnerModal'
 
 import '../assets/gamePage.css'
-import { Icon } from '@iconify/react/dist/iconify.js'
 import { IconButton } from '../components/IconButton'
 
 function useGenerateLevel(level) {
