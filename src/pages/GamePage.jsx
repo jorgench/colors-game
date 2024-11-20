@@ -76,6 +76,7 @@ function useGenerateLevel(level) {
     setBoardState,
     isWinner,
     steps,
+    levelInfo,
   }
 }
 export function GamePage() {
@@ -91,6 +92,7 @@ export function GamePage() {
     setBoardState,
     isWinner,
     steps,
+    levelInfo,
   } = useGenerateLevel(level)
 
   const timerRef = useRef()
@@ -100,7 +102,7 @@ export function GamePage() {
   useEffect(() => {
     if (isWinner) {
       const newPoints = calculatePoints({
-        level,
+        level: levelInfo,
         time: timerRef.current.getData(),
         steps,
       })
@@ -131,8 +133,6 @@ export function GamePage() {
     }
     return
   }
-
-  console.log('rerender')
 
   function goToHome() {
     setStep('started')

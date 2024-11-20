@@ -17,9 +17,27 @@ export const useGameState = create(
         return {
           setNextLevel(points = 0) {
             if (points < 1) return
-            set(state => ({
-              pointsHistory: [...state.pointsHistory, { level: state.level + 1, points }],
-            }))
+
+            set(state => {
+              const indexLevel = state.pointsHistory[state.level - 1]
+
+              if (indexLevel) {
+                const levelCopy = [...state.pointsHistory]
+
+                levelCopy[state.level - 1] = {
+                  level: state.level + 1,
+                  points,
+                }
+
+                return {
+                  pointsHistory: levelCopy,
+                }
+              }
+
+              return {
+                pointsHistory: [...state.pointsHistory, { level: state.level + 1, points }],
+              }
+            })
           },
           setLevel(currentLevel) {
             set(() => ({

@@ -132,14 +132,14 @@ export function generateLevel(level) {
 }
 
 export function calculatePoints({ level, time, steps }) {
-  const levelStart = 1000
-  const timePenalization = 10
-  const movePenalization = 10
-  const minMovements = 4
+  const levelStart = level.maxPoints
+  const timePenalization = level.timePenalizationFactor
+  const movePenalization = level.movePenalizationFactor
+  const minMovements = level.minMovements
   const additionalMoves = steps - minMovements
 
   const points = levelStart / (1 + time / timePenalization) - additionalMoves * movePenalization
-  return Math.ceil(points)
+  return Math.max(10, Math.ceil(points))
 }
 
 export function generateInitialOptions(pallette) {
