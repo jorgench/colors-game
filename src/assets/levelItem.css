@@ -10,6 +10,14 @@
   flex-direction: column;
   justify-content: space-between;
   transition: all 0.35s ease;
+  background-color: var(--transparent-surface-color);
+  height: var(--size-box);
+  width: var(--size-box);
+  animation-duration: 0.35s;
+  animation-delay: calc(var(--n, 1) * 0.02s);
+  animation-name: entryGrid;
+  animation-timing-function: ease;
+  animation-fill-mode: backwards;
 }
 
 .level-pass {
@@ -22,3 +30,29 @@
   transform: scale(1.05);
   cursor: pointer;
 }
+
+@keyframes entryGrid {
+  0% {
+    opacity: 0;
+    filter: brightness(2) saturate(2);
+    transform: scale(0.8, 0.8);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1) saturate(1);
+    transform: scale(1, 1);
+  }
+}
+
+.fade-entry {
+  animation-duration: 0.35s;
+  animation-delay: 0.05s;
+  animation-name: entryGrid;
+  animation-timing-function: ease;
+  animation-fill-mode: backwards;
+}
+
+@media screen and (prefers-reduced-motion: reduce) {
+  .animate { animation: none !important; }
+}
+

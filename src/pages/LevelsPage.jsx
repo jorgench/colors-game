@@ -23,7 +23,6 @@ export function LevelsPage() {
     })
 
   function openLevel(level) {
-    console.log('New Level ', generateLevel(level))
     setLevel(level)
   }
 
@@ -36,7 +35,7 @@ export function LevelsPage() {
   return (
     <PageLayout>
       <main className="container page">
-        <h1 className="title">
+        <h1 className="title animate fade-entry">
           Nivel {page}-{allLevels * page}
         </h1>
 
@@ -49,16 +48,16 @@ export function LevelsPage() {
             justifyContent: 'center',
           }}
         >
-          {itemsPerPage.map(level => {
+          {itemsPerPage.map((level, i) => {
             return (
-              <div className="item-grid" key={`level-${level.name}`}>
-                <LevelItem
-                  level={level.name}
-                  points={level.points}
-                  canSelected={level.canSelected}
-                  onClick={() => openLevel(level.name)}
-                />
-              </div>
+              <LevelItem
+                key={`level-${level.name}`}
+                style={{ '--n': i }}
+                level={level.name}
+                points={level.points}
+                canSelected={level.canSelected}
+                onClick={() => openLevel(level.name)}
+              />
             )
           })}
         </div>
