@@ -12,7 +12,7 @@ export function WinnerModal({ isOpen = false, points, onCallback = () => {}, onN
             <DialogTitle as="h3" className="text-center">
               ¡Ganaste!
             </DialogTitle>
-            <div style={{ fontSize: '2.5rem' }}>
+            <div style={{ fontSize: '2.5rem' }} className="center content">
               <LevelStarts points={points} animated={true} />
               {points} pts
             </div>
