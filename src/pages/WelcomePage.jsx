@@ -8,7 +8,7 @@ export function WelcomePage() {
 
   return (
     <PageLayout>
-      <main className="container page">
+      <main className="container page animate fade-entry">
         <LogoGame className="title h1" />
         <p>
           Este es un juego inspirado en <a href="#">Blendoku</a> Realizado en React

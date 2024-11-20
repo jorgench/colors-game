@@ -233,6 +233,11 @@ button:active {
   text-align: center;
   margin-left: auto;
   margin-right: auto;
+  animation-duration: 0.35s;
+  animation-delay: 0.05s;
+  animation-name: entryBottom;
+  animation-timing-function: ease;
+  animation-fill-mode: backwards;
 }
 
 .header-page {
@@ -253,6 +258,17 @@ button:active {
   0% {
     opacity: 0;
     transform: scaleY(0.8) translateY(-10%);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1) translateY(0%);
+  }
+}
+
+@keyframes entryBottom {
+  0% {
+    opacity: 0;
+    transform: scaleY(0.8) translateY(10%);
   }
   100% {
     opacity: 1;
@@ -286,4 +302,12 @@ input:not([type="checkbox"]):focus-visible, .input:not([type="checkbox"]):focus-
   display: flex;
   flex-direction: column;
   gap: var(--size-xs)
+}
+
+.game-box {
+  animation-duration: 0.35s;
+  animation-delay: calc(var(--n, 1) * 0.02s);
+  animation-name: entryGrid;
+  animation-timing-function: ease;
+  animation-fill-mode: backwards;
 }

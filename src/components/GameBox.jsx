@@ -10,7 +10,7 @@ export function GameBox({ id, children, style, data }) {
   }
 
   return (
-    <div ref={setNodeRef} className="item-grid" style={{ ...innerStyle, ...style }}>
+    <div ref={setNodeRef} className="item-grid game-box" style={{ ...innerStyle, ...style }}>
       {children}
     </div>
   )

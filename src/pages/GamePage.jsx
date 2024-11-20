@@ -149,7 +149,7 @@ export function GamePage() {
   return (
     <div className="layout">
       <main className="container game-page">
-        <div className="game-page-header ">
+        <div className="game-page-header animate">
           {/*Grid: {gridMap.length} {gridMap[0].length}*/}
           <TimerInLevel ref={timerRef} isActive={!isWinner} />
           <h4 className="title h4">Nivel {localLevel}</h4>
@@ -175,7 +175,7 @@ export function GamePage() {
                     <GameBox
                       id={`item-${x}-${y}`}
                       key={`item-${x}-${y}`}
-                      style={{ gridColumn: y + 1, gridRow: x + 1 }}
+                      style={{ gridColumn: y + 1, gridRow: x + 1, '--n': x + y }}
                       data={{ row: x, col: y, kind: 'board' }}
                     >
                       <GameBoxInsideBoard key={`${x},${y}`} item={boardState[`${x},${y}`]} x={x} y={y} />
@@ -189,7 +189,12 @@ export function GamePage() {
             <div className="game-page-options">
               {plainPallette.map((item, i) => {
                 return (
-                  <GameBox id={`item-${i}`} key={`item-${i}`} data={{ optionPlace: i, kind: 'option' }}>
+                  <GameBox
+                    id={`item-${i}`}
+                    key={`item-${i}`}
+                    style={{ '--n': levelInfo.dots + i }}
+                    data={{ optionPlace: i, kind: 'option' }}
+                  >
                     <GameBoxInsideOption key={i + 'option'} item={item} index={i} />
                   </GameBox>
                 )
@@ -203,11 +208,7 @@ export function GamePage() {
             goToNextLevel={() => nextLevel()}
             goToPrevLevel={() => prevLevel()}
           />
-          <div
-            className="game-page-settings-right"
-            style={{ fontSize: 'var(--size-m)' }}
-            onClick={() => changeColor(boardState)}
-          >
+          <div className="game-page-settings-right" style={{ fontSize: 'var(--size-m)' }} onClick={() => {}}>
             <Icon icon="mynaui:cog-four-solid" />
           </div>
         </div>
