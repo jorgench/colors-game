@@ -24,6 +24,7 @@ import { WinnerModal } from '../components/WinnerModal'
 
 import '../assets/gamePage.css'
 import { Icon } from '@iconify/react/dist/iconify.js'
+import { IconButton } from '../components/IconButton'
 
 function useGenerateLevel(level) {
   const [levelInfo] = useState(generateLevel(level))
@@ -153,9 +154,8 @@ export function GamePage() {
           {/*Grid: {gridMap.length} {gridMap[0].length}*/}
           <TimerInLevel ref={timerRef} isActive={!isWinner} />
           <h4 className="title h4">Nivel {localLevel}</h4>
-          <div style={{ fontSize: 'var(--size-m)' }} onClick={goToHome}>
-            <Icon icon="mynaui:logout" />
-          </div>
+
+          <IconButton icon="mynaui:logout" style={{ fontSize: 'var(--size-m)' }} onClick={goToHome} />
         </div>
 
         <WinnerModal isOpen={isWinner} points={points} onCallback={goToHome} onNextLevelPress={nextLevel} />
@@ -208,9 +208,12 @@ export function GamePage() {
             goToNextLevel={() => nextLevel()}
             goToPrevLevel={() => prevLevel()}
           />
-          <div className="game-page-settings-right" style={{ fontSize: 'var(--size-m)' }} onClick={() => {}}>
-            <Icon icon="mynaui:cog-four-solid" />
-          </div>
+          <IconButton
+            icon="mynaui:cog-four-solid"
+            className="game-page-settings-right rotate-hover"
+            style={{ fontSize: 'var(--size-m)' }}
+            onClick={() => {}}
+          />
         </div>
       </main>
     </div>
@@ -220,15 +223,9 @@ export function GamePage() {
 function GameControls({ onChangeColor = () => {}, goToNextLevel = () => {}, goToPrevLevel = () => {} }) {
   return (
     <div className="game-page-settings">
-      <div onClick={() => goToPrevLevel()}>
-        <Icon icon="mynaui:chevron-left" />
-      </div>
-      <div className="big-option" onClick={() => onChangeColor()}>
-        <Icon icon="mynaui:refresh-alt" />
-      </div>
-      <div onClick={() => goToNextLevel()}>
-        <Icon icon="mynaui:chevron-right" />
-      </div>
+      <IconButton icon="mynaui:chevron-left" onClick={() => goToPrevLevel()} />
+      <IconButton icon="mynaui:refresh-alt" className="big-option rotate-hover" onClick={() => onChangeColor()} />
+      <IconButton icon="mynaui:chevron-right" onClick={() => goToNextLevel()} />
     </div>
   )
 }

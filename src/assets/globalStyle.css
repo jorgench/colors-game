@@ -311,3 +311,41 @@ input:not([type="checkbox"]):focus-visible, .input:not([type="checkbox"]):focus-
   animation-timing-function: ease;
   animation-fill-mode: backwards;
 }
+
+.button-icon {
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  padding: var(--size-xs);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(.53,.12,.11,1.23);
+}
+
+.button-icon:hover {
+  transform: scale(1.15);
+}
+
+.button-icon:active {
+  transform: scale(0.9);
+}
+
+.rotate-hover:hover {
+  animation-duration: 0.35s;
+  animation-name: spinner;
+  animation-timing-function: ease;
+  animation-fill-mode: backwards;
+}
+
+
+
+
+@keyframes spinner  {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
