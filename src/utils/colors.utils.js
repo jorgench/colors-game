@@ -52,7 +52,7 @@ function generateMonochrome(baseColor, step) {
   return colorScale.reverse()
 }
 
-function createScientificPalettes(baseColor) {
+/*function createScientificPalettes(baseColor) {
   const targetHueSteps = {
     analogous: [0, 30, 60],
     triadic: [0, 120, 240],
@@ -73,13 +73,13 @@ function createScientificPalettes(baseColor) {
   }
 
   return palettes
-}
+}*/
 
 function mapColor(n, start1, end1, start2, end2) {
   return ((n - start1) / (end1 - start1)) * (end2 - start2) + start2
 }
 
-function generateHue({ base, minLightness, maxLightness, hueStep }) {
+function generateHue({ base, minLightness, maxLightness }) {
   return (move, steps) => {
     const hue = move > 0 ? adjustHue(base.h + steps * move) : adjustHue(base.h - steps * move)
     const lightness =

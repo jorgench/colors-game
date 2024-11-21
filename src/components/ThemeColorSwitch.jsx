@@ -4,13 +4,13 @@ import { useId } from 'react'
 import '../assets/switch.css'
 
 import { useLocalStorage } from '@uidotdev/usehooks'
-import { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
 
 function useTheme() {
   const preferences = window.matchMedia('(preferens-color-schema: dark)').matches
   const [isDarkTheme, setIsDark] = useLocalStorage('darkTheme', preferences)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.body.setAttribute('data-theme', isDarkTheme ? 'dark' : 'light')
   }, [isDarkTheme])
 
@@ -41,6 +41,7 @@ export function ThemeColorSwitch() {
           type="checkbox"
           aria-label="Cambiar de tema"
           checked={isDarkTheme}
+          value="isDarkTheme"
           onChange={onChange}
         />
         <div className="switch-icons" key={`mode-${isDarkTheme}`}>
