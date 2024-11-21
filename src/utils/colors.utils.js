@@ -211,15 +211,15 @@ export function getAndEnsurePalletteColor(options, board, newColor) {
     const allOptions = [...newOptions, ...Object.values(newBoardState)].filter(i => Boolean(i))
     let map = new Map()
 
-    for (let i = 0; i < allOptions.length; i++) {
-      if (map.get(allOptions[i].color)) {
-        console.log('Se tiene que repetir')
-        break
+    const t = allOptions.find(option => {
+      if (map.get(option.color)) {
+        return true
       }
-      map.set(allOptions[i].color, true)
-    }
+      map.set(option.color, true)
+      return false
+    })
 
-    isSame = false
+    isSame = !!t
   }
   return { options: newOptions, board: newBoardState }
 }
