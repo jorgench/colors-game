@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://jorgench.github.io/colors-game",
+  "homepage": "https://jorgench.github.io/colors-game/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
