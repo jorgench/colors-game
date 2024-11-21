@@ -43,8 +43,8 @@ function calculateMax(coords, xy = 0) {
   )
 }
 
-export function generateField(steps) {
-  const { path, savedPosition } = generatePath(steps)
+export function generateField({ dots }) {
+  const { path, savedPosition } = generatePath(dots)
   const x = calculateMax(path, 0)
   const y = calculateMax(path, 1)
 
@@ -52,14 +52,34 @@ export function generateField(steps) {
   const numRow = Math.abs(x.min - x.max) + 1
 
   const gridMap = []
+
+  let minX = null,
+    maxX = null,
+    minY = null,
+    maxY = null
+
+  let rowCount = 0
   for (let row = x.min; row <= x.max; row++) {
     let currentRow = gridMap.length
+    let columnCount = 0
     for (let column = y.min; column <= y.max; column++) {
       if (!gridMap[currentRow]) {
         gridMap[currentRow] = []
       }
-      gridMap[currentRow].push(savedPosition[`${row},${column}`] ? [row, column] : false)
+
+      const itemSaved = savedPosition[`${row},${column}`]
+
+      if (itemSaved) {
+        minX ??= rowCount
+        maxX = rowCount
+        minY ??= columnCount
+        maxY = columnCount
+      }
+      gridMap[currentRow].push(itemSaved ? [row, column] : false)
+
+      columnCount++
     }
+    rowCount++
   }
 
   return {
@@ -67,6 +87,12 @@ export function generateField(steps) {
     numRow,
     path,
     gridMap,
+    max: {
+      minX,
+      minY,
+      maxX,
+      maxY,
+    },
   }
 }
 
@@ -87,7 +113,7 @@ export function generateCalculatePoints({ level }) {
 }
 
 const levelConst = {
-  colorsIngrid: [4, 5, 6, 8, 10, 12, 14, 16],
+  colorsIngrid: [5, 6, 8, 10, 12, 14, 16],
   distanceInHue: [20, 30, 40, 50, 60, 70],
   distanceMonochrome: [5, 4, 3, 2, 1],
 }
@@ -102,7 +128,7 @@ export function generateLevel(level) {
   const indInside = (level - 1) % separateBlock
 
   // Configurar una base de dots para los primeros niveles
-  const initialDots = 4 // Mantener 4 dots en los primeros niveles
+  const initialDots = levelConst.colorsIngrid[0]
   let dotsInLevel
 
   if (level <= separateBlock) {
@@ -114,7 +140,7 @@ export function generateLevel(level) {
   }
 
   // Definir movimientos mínimos y puntos máximos
-  const minMovements = dotsInLevel
+  const minMovements = dotsInLevel - 2
   const maxPoints = 4000 + level * 20
 
   // Definir penalizaciones en función del nivel
@@ -142,18 +168,29 @@ export function calculatePoints({ level, time, steps }) {
   return Math.max(10, Math.ceil(points))
 }
 
-export function generateInitialOptions(pallette) {
-  return pallette
+export function generateInitialOptions(pallette, { minX, minY, maxX, maxY }) {
+  let firstColor = null
+  let lastColor = null
+
+  const newPallette = pallette
     .reduce((prev, row, x) => {
       if (!row) return prev
       row.forEach((col, y) => {
         if (col) {
-          prev.push({ color: col, row: x, col: y })
+          if (x === minX && y == minY) {
+            firstColor = { color: col, row: x, col: y }
+          } else if (x === maxX && y === maxY) {
+            lastColor = { color: col, row: x, col: y }
+          } else {
+            prev.push({ color: col, row: x, col: y })
+          }
         }
       })
       return prev
     }, [])
     .sort(() => Math.random() - 0.5)
+
+  return { newPallette, firstColor, lastColor }
 }
 
 export function generateCheckWinner(level) {

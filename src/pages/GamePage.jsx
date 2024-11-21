@@ -23,10 +23,8 @@ import { IconButton } from '../components/IconButton'
 function useGenerateLevel(level) {
   const [levelInfo] = useState(generateLevel(level))
 
-  const dots = levelInfo.dots
   const [colorDefault, setColorDefault] = useState(getBaseColor())
-  const [state] = useState(generateField(dots))
-  const { gridMap, numColumn, numRow } = state
+  const [{ gridMap, numColumn, numRow, max }] = useState(generateField(levelInfo))
 
   const [boardState, setBoardState] = useState({})
 
@@ -34,8 +32,15 @@ function useGenerateLevel(level) {
 
   useEffect(() => {
     const pallette = createPallette(gridMap, colorDefault)
-    const newPallette = generateInitialOptions(pallette)
+    const { newPallette, firstColor, lastColor } = generateInitialOptions(pallette, max)
+
+    const newGrid = { ...boardState }
+
+    newGrid[`${firstColor.row},${firstColor.col}`] = firstColor
+    newGrid[`${lastColor.row},${lastColor.col}`] = lastColor
+
     setPlainPallette(newPallette)
+    setBoardState(newGrid)
   }, [gridMap])
 
   const [isWinner, setIsWinner] = useState(false)
