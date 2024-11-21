@@ -1,6 +1,6 @@
 .switch label{
   position: relative;
-
+  display: block;
 }
 
 .switch input {
