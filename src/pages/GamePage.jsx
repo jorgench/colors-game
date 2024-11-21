@@ -7,12 +7,7 @@ import {
   generateLevel,
   moveItemInLevel,
 } from '../utils/level.utils'
-import {
-  changeColorFromBoardState,
-  changeColorFromOptionsState,
-  createPallette,
-  getBaseColor,
-} from '../utils/colors.utils'
+import { createPallette, getAndEnsurePalletteColor, getBaseColor } from '../utils/colors.utils'
 import { GameBox } from '../components/GameBox'
 import { GameColor } from '../components/GameColor'
 import { DndContext } from '@dnd-kit/core'
@@ -54,8 +49,9 @@ function useGenerateLevel(level) {
     const newColor = getBaseColor()
     setColorDefault(newColor)
 
-    setPlainPallette(changeColorFromOptionsState(plainPallette, newColor))
-    setBoardState(changeColorFromBoardState(boardState, newColor))
+    const { options, board } = getAndEnsurePalletteColor(plainPallette, boardState, newColor)
+    setPlainPallette(options)
+    setBoardState(board)
   }
 
   const [steps, setSteps] = useState(0)

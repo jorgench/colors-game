@@ -198,4 +198,30 @@ export function createPallette(gridMap, baseColor) {
   })
 }
 
+export function getAndEnsurePalletteColor(options, board, newColor) {
+  let newOptions = null
+  let newBoardState = null
+
+  let isSame = true
+
+  while (isSame) {
+    newOptions = changeColorFromOptionsState(options, newColor)
+    newBoardState = changeColorFromBoardState(board, newColor)
+
+    const allOptions = [...newOptions, ...Object.values(newBoardState)].filter(i => Boolean(i))
+    let map = new Map()
+
+    for (let i = 0; i < allOptions.length; i++) {
+      if (map.get(allOptions[i].color)) {
+        console.log('Se tiene que repetir')
+        break
+      }
+      map.set(allOptions[i].color, true)
+    }
+
+    isSame = false
+  }
+  return { options: newOptions, board: newBoardState }
+}
+
 // https://tympanus.net/codrops/2021/12/07/coloring-with-code-a-programmatic-approach-to-design/
