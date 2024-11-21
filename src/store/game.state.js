@@ -78,7 +78,7 @@ export const useGameState = create(
     ),
     {
       name: 'gameStorage',
-      storage: createJSONStorage(() => sessionStorage, {
+      storage: createJSONStorage(() => localStorage, {
         replacer: (key, value) => {
           if (key === 'gameStep' && value === 'finish') {
             return 'started'
