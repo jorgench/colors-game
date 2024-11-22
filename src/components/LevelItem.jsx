@@ -2,7 +2,7 @@ import { LevelStarts } from './LevelStarts'
 
 import '../assets/levelItem.css'
 
-export function LevelItem({ level = 1, points, canSelected = false, onClick = () => [], ...attrs }) {
+export function LevelItem({ level = 1, points, canSelected = false, onClick = () => {}, ...attrs }) {
   const levelPass = points > 0
 
   const className = ['level-item animate', levelPass ? 'level-pass' : null, canSelected ? 'level-option' : null]
