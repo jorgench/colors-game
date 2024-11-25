@@ -1,6 +1,6 @@
 import { useDroppable } from '@dnd-kit/core'
 
-export function GameBox({ id, children, style, data }) {
+export function GameBox({ id, children, style, data, ...attrs }) {
   const { isOver, setNodeRef } = useDroppable({
     id: id,
     data,
@@ -10,7 +10,7 @@ export function GameBox({ id, children, style, data }) {
   }
 
   return (
-    <div ref={setNodeRef} className="item-grid game-box" style={{ ...innerStyle, ...style }}>
+    <div ref={setNodeRef} className="item-grid game-box" style={{ ...innerStyle, ...style }} {...attrs}>
       {children}
     </div>
   )
