@@ -11,5 +11,5 @@ export function PageLayout({ children }) {
 }
 
 function FooterPage() {
-  return <footer className="footer">Creado el 2024</footer>
+  return <footer className="footer">Versión únicamente test</footer>
 }
