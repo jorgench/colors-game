@@ -33,8 +33,6 @@ export function FormNameModal({ isOpen = false, onClose = () => {} }) {
     }
   }
 
-  console.log('re render')
-
   return (
     <Dialog open={isOpen} as="div" className="modal-root" onClose={() => onClose()}>
       <div className="modal-background">
