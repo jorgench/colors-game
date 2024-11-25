@@ -198,13 +198,42 @@ export function createPallette(gridMap, baseColor) {
   })
 }
 
-export function getAndEnsurePalletteColor(options, board, newColor) {
+export function createAndEnsurePalletteColor(gridMap) {
+  let hasRepeatColor = true
+  let finalPallette = []
+
+  while (hasRepeatColor) {
+    const newColor = getBaseColor()
+    finalPallette = createPallette(gridMap, newColor)
+
+    let map = new Map()
+    const hasElement = finalPallette
+      .flat()
+      .filter(c => Boolean(c))
+      .find(color => {
+        if (map.get(color)) {
+          console.log(color, map)
+          return true
+        }
+        map.set(color, true)
+        return false
+      })
+
+    hasRepeatColor = !!hasElement
+  }
+
+  return finalPallette
+}
+
+export function getAndEnsurePalletteColor(options, board) {
   let newOptions = null
   let newBoardState = null
 
   let isSame = true
 
   while (isSame) {
+    let newColor = getBaseColor()
+
     newOptions = changeColorFromOptionsState(options, newColor)
     newBoardState = changeColorFromBoardState(board, newColor)
 

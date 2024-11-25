@@ -7,7 +7,7 @@ import {
   generateLevel,
   moveItemInLevel,
 } from '../utils/level.utils'
-import { createPallette, getAndEnsurePalletteColor, getBaseColor } from '../utils/colors.utils'
+import { createAndEnsurePalletteColor, getAndEnsurePalletteColor } from '../utils/colors.utils'
 import { GameBox } from '../components/GameBox'
 import { GameColor } from '../components/GameColor'
 import { DndContext } from '@dnd-kit/core'
@@ -21,63 +21,65 @@ import '../assets/gamePage.css'
 import { IconButton } from '../components/IconButton'
 
 function useGenerateLevel(level) {
-  const [levelInfo] = useState(generateLevel(level))
+  try {
+    const levelInfo = useMemo(() => generateLevel(level), [level])
 
-  const [colorDefault, setColorDefault] = useState(getBaseColor())
-  const [{ gridMap, numColumn, numRow, max }] = useState(generateField(levelInfo))
+    const { gridMap, numColumn, numRow, max } = useMemo(() => {
+      return generateField(levelInfo)
+    }, [levelInfo])
 
-  const [boardState, setBoardState] = useState({})
+    const [boardState, setBoardState] = useState({})
 
-  const [plainPallette, setPlainPallette] = useState([])
+    const [plainPallette, setPlainPallette] = useState([])
 
-  useEffect(() => {
-    const pallette = createPallette(gridMap, colorDefault)
-    const { newPallette, firstColor, lastColor } = generateInitialOptions(pallette, max)
+    useEffect(() => {
+      const pallette = createAndEnsurePalletteColor(gridMap)
+      const { newPallette, firstColor, lastColor } = generateInitialOptions(pallette, max)
 
-    const newGrid = { ...boardState }
+      const newGrid = { ...boardState }
 
-    newGrid[`${firstColor.row},${firstColor.col}`] = firstColor
-    newGrid[`${lastColor.row},${lastColor.col}`] = lastColor
+      newGrid[`${firstColor.row},${firstColor.col}`] = firstColor
+      newGrid[`${lastColor.row},${lastColor.col}`] = lastColor
 
-    setPlainPallette(newPallette)
-    setBoardState(newGrid)
-  }, [gridMap])
+      setPlainPallette(newPallette)
+      setBoardState(newGrid)
+    }, [gridMap])
 
-  const [isWinner, setIsWinner] = useState(false)
-  useEffect(() => {
-    setIsWinner(checkWinnerCondition({ boardState }))
-  }, [boardState])
+    const [isWinner, setIsWinner] = useState(false)
+    useEffect(() => {
+      setIsWinner(checkWinnerCondition({ boardState }))
+    }, [boardState])
 
-  const checkWinnerCondition = useMemo(() => generateCheckWinner(levelInfo), [levelInfo])
+    const checkWinnerCondition = useMemo(() => generateCheckWinner(levelInfo), [levelInfo])
 
-  function changeColor() {
-    const newColor = getBaseColor()
-    setColorDefault(newColor)
+    function changeColor() {
+      const { options, board } = getAndEnsurePalletteColor(plainPallette, boardState)
+      setPlainPallette(options)
+      setBoardState(board)
+    }
 
-    const { options, board } = getAndEnsurePalletteColor(plainPallette, boardState, newColor)
-    setPlainPallette(options)
-    setBoardState(board)
-  }
+    const [steps, setSteps] = useState(0)
 
-  const [steps, setSteps] = useState(0)
+    useEffect(() => {
+      setSteps(steps + 1)
+      setIsWinner(checkWinnerCondition({ boardState }))
+    }, [boardState])
 
-  useEffect(() => {
-    setSteps(steps + 1)
-    setIsWinner(checkWinnerCondition({ boardState }))
-  }, [boardState])
-
-  return {
-    gridMap,
-    numColumn,
-    numRow,
-    plainPallette,
-    setPlainPallette,
-    changeColor,
-    boardState,
-    setBoardState,
-    isWinner,
-    steps,
-    levelInfo,
+    return {
+      gridMap,
+      numColumn,
+      numRow,
+      plainPallette,
+      setPlainPallette,
+      changeColor,
+      boardState,
+      setBoardState,
+      isWinner,
+      steps,
+      levelInfo,
+    }
+  } catch (e) {
+    console.error(e)
   }
 }
 export function GamePage() {
