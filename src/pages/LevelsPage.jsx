@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { LevelItem } from '../components/LevelItem'
 import { useGameState } from '../store/game.state'
-import { generateLevel } from '../utils/level.utils'
 import { PageLayout } from '../layout/PageLayout'
 
 export function LevelsPage() {
@@ -36,7 +35,7 @@ export function LevelsPage() {
     <PageLayout>
       <main className="container page">
         <h1 className="title animate fade-entry">
-          Nivel {page}-{allLevels * page}
+          Niveles {allLevels * (page - 1) + 1}-{allLevels * page}
         </h1>
 
         <div
