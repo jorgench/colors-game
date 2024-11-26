@@ -312,6 +312,13 @@ input:not([type="checkbox"]):focus-visible, .input:not([type="checkbox"]):focus-
   animation-fill-mode: backwards;
 }
 
+.game-box > * {
+  animation-duration: 0.25s;
+  animation-name: fallBox;
+  animation-timing-function: cubic-bezier(.7,-0.36,.3,1.58);
+  animation-fill-mode: backwards;
+}
+
 .button-icon {
   border-radius: 50%;
   aspect-ratio: 1/1;
@@ -347,5 +354,20 @@ input:not([type="checkbox"]):focus-visible, .input:not([type="checkbox"]):focus-
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes fallBox {
+  0% {
+    transform: scale(1);
+  }
+  20% {
+    transform: scale(0.95);
+  }
+  80% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
   }
 }
