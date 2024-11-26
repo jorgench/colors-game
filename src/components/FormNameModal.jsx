@@ -1,15 +1,24 @@
 import { Button } from '@headlessui/react'
-import { useGameState } from '../store/game.state'
+import { useGameState } from '@/store/game.state'
 
 import '../assets/modal.css'
-import { useRef } from 'react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { TemplateModal } from './TemplateModal'
 
 export function FormNameModal({ isOpen = false, onClose = () => {} }) {
   const { setPlayer } = useGameState()
   const [hasError, setHasError] = useState(false)
   const nameRef = useRef(null)
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => {
+        if (nameRef) {
+          nameRef?.current?.focus()
+        }
+      })
+    }
+  }, [isOpen])
 
   function setName() {
     const nameValue = nameRef?.current?.value
