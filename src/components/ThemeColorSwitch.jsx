@@ -7,7 +7,7 @@ import { useLocalStorage } from '@uidotdev/usehooks'
 import { useLayoutEffect } from 'react'
 
 function useTheme() {
-  const preferences = window.matchMedia('(preferens-color-schema: dark)').matches
+  const preferences = window.matchMedia('(prefers-color-scheme:dark)').matches
   const [isDarkTheme, setIsDark] = useLocalStorage('darkTheme', preferences)
 
   useLayoutEffect(() => {
@@ -26,7 +26,6 @@ function useTheme() {
 
 export function ThemeColorSwitch() {
   const { isDarkTheme, changeTheme } = useTheme()
-
   const idComponent = useId()
 
   function onChange(evt) {
