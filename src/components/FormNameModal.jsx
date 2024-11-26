@@ -1,9 +1,10 @@
-import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import { Button } from '@headlessui/react'
 import { useGameState } from '../store/game.state'
 
 import '../assets/modal.css'
 import { useRef } from 'react'
 import { useState } from 'react'
+import { TemplateModal } from './TemplateModal'
 
 export function FormNameModal({ isOpen = false, onClose = () => {} }) {
   const { setPlayer } = useGameState()
@@ -34,29 +35,22 @@ export function FormNameModal({ isOpen = false, onClose = () => {} }) {
   }
 
   return (
-    <Dialog open={isOpen} as="div" className="modal-root" onClose={() => onClose()}>
-      <div className="modal-background">
-        <div className="modal-center">
-          <DialogPanel transition className="modal-block">
-            <DialogTitle as="h3" className="text-center">
-              Ingresa tu nombre
-            </DialogTitle>
-            <div className="center content">
-              <input
-                ref={nameRef}
-                type="name"
-                aria-label="ingresatu nombre"
-                onFocus={() => setHasError(false)}
-                onBlur={() => checkNameValue()}
-              />
-              {hasError ? <span className="text-xs text-error">El nombre es requerido</span> : null}
-            </div>
-            <div className="modal-options">
-              <Button onClick={setName}>Aceptar</Button>
-            </div>
-          </DialogPanel>
-        </div>
+    <TemplateModal
+      title="Ingresa tu nombre"
+      isOpen={isOpen}
+      onClose={onClose}
+      footer={<Button onClick={setName}>Aceptar</Button>}
+    >
+      <div className="center content">
+        <input
+          ref={nameRef}
+          type="name"
+          aria-label="ingresatu nombre"
+          onFocus={() => setHasError(false)}
+          onBlur={() => checkNameValue()}
+        />
+        {hasError ? <span className="text-xs text-error">El nombre es requerido</span> : null}
       </div>
-    </Dialog>
+    </TemplateModal>
   )
 }

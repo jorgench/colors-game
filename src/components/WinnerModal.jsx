@@ -1,28 +1,26 @@
-import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
+import { Button } from '@headlessui/react'
 
 import '../assets/modal.css'
 import { LevelStarts } from './LevelStarts'
+import { TemplateModal } from './TemplateModal'
 
 export function WinnerModal({ isOpen = false, points, onCallback = () => {}, onNextLevelPress = () => {} }) {
   return (
-    <Dialog open={isOpen} as="div" className="modal-root" onClose={() => onCallback()}>
-      <div className="modal-background">
-        <div className="modal-center">
-          <DialogPanel transition className="modal-block">
-            <DialogTitle as="h3" className="text-center">
-              ¡Ganaste!
-            </DialogTitle>
-            <div style={{ fontSize: '2.5rem' }} className="center content">
-              <LevelStarts points={points} animated={true} />
-              {points} pts
-            </div>
-            <div className="modal-options">
-              <Button onClick={() => onCallback()}>Regresar</Button>
-              <Button onClick={() => onNextLevelPress()}>Siguiente Nivel</Button>
-            </div>
-          </DialogPanel>
-        </div>
+    <TemplateModal
+      isOpen={isOpen}
+      onClose={onCallback}
+      title="¡Ganaste!"
+      footer={
+        <>
+          <Button onClick={() => onCallback()}>Regresar</Button>
+          <Button onClick={() => onNextLevelPress()}>Siguiente Nivel</Button>
+        </>
+      }
+    >
+      <div style={{ fontSize: '2.5rem' }} className="center content">
+        <LevelStarts points={points} animated={true} />
+        {points} pts
       </div>
-    </Dialog>
+    </TemplateModal>
   )
 }
