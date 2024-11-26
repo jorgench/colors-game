@@ -6,19 +6,19 @@ import {
   generateInitialOptions,
   generateLevel,
   moveItemInLevel,
-} from '../utils/level.utils'
-import { createAndEnsurePalletteColor, getAndEnsurePalletteColor } from '../utils/colors.utils'
-import { GameBox } from '../components/GameBox'
-import { GameColor } from '../components/GameColor'
+} from '@/utils/level.utils'
+import { createAndEnsurePalletteColor, getAndEnsurePalletteColor } from '@/utils/colors.utils'
+import { GameBox } from '@/components/GameBox'
+import { GameColor } from '@/components/GameColor'
 import { DndContext } from '@dnd-kit/core'
-import { TimerInLevel } from '../components/TimerInLevel'
-import { useGameState } from '../store/game.state'
-import { useRef } from 'react'
-import { useMemo } from 'react'
-import { WinnerModal } from '../components/WinnerModal'
+import { TimerInLevel } from '@/components/TimerInLevel'
+import { useGameState } from '@/store/game.state'
+import { useMemo, useRef } from 'react'
+import { WinnerModal } from '@/components/WinnerModal'
 
 import '../assets/gamePage.css'
-import { IconButton } from '../components/IconButton'
+import { IconButton } from '@/components/IconButton'
+import { InfoGameHelper } from '@/components/InfoGameHelper'
 
 function useGenerateLevel(level) {
   try {
@@ -205,6 +205,7 @@ export function GamePage() {
           </DndContext>
         </section>
         <div className="game-page-footer">
+          <InfoGameHelper style={{ fontSize: 'var(--size-m)' }} />
           <GameControls
             onChangeColor={() => changeColor(boardState)}
             goToNextLevel={() => nextLevel()}

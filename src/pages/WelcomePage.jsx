@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { FormNameModal } from '../components/FormNameModal'
-import { LogoGame } from '../components/LogoGame'
-import { PageLayout } from '../layout/PageLayout'
+import { FormNameModal } from '@/components/FormNameModal'
+import { LogoGame } from '@/components/LogoGame'
+import { PageLayout } from '@/layout/PageLayout'
 
 export function WelcomePage() {
   const [openModalName, setOpenModalName] = useState(false)

@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { LevelItem } from '../components/LevelItem'
-import { useGameState } from '../store/game.state'
-import { PageLayout } from '../layout/PageLayout'
+import { LevelItem } from '@/components/LevelItem'
+import { useGameState } from '@/store/game.state'
+import { PageLayout } from '@/layout/PageLayout'
 
 export function LevelsPage() {
   const allLevels = 25
