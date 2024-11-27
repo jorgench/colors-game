@@ -134,18 +134,20 @@ export function generateLevel(level) {
   if (level <= separateBlock) {
     dotsInLevel = initialDots // Usar valor base de dots para niveles hasta `separateBlock`
   } else {
-    // Aumentar `dots` en bloques más altos según el valor de `colorsIngrid`
-    const colorOptions = levelConst.colorsIngrid.slice(Math.max(0, indBlock + 1 - 3), indBlock + 1)
-    dotsInLevel = colorOptions[Math.min(indInside, colorOptions.length - 1)]
+    // Asegurar que `indBlock` y `indInside` no excedan los límites
+    const startIndex = Math.max(0, indBlock - 2)
+    const colorOptions = levelConst.colorsIngrid.slice(startIndex, indBlock + 1)
+
+    dotsInLevel = colorOptions[Math.min(indInside, colorOptions.length - 1)] || initialDots
   }
 
   // Definir movimientos mínimos y puntos máximos
-  const minMovements = dotsInLevel - 2
-  const maxPoints = 4000 + level * 20
+  const minMovements = Math.max(1, dotsInLevel - 2) // Evitar movimientos negativos
+  const maxPoints = Math.min(10_000, 4000 + level * 20) // Limitar puntos máximos
 
   // Definir penalizaciones en función del nivel
-  const movePenalizationFactor = 1 + level * 0.05
-  const timePenalizationFactor = 1 + level * 0.03
+  const movePenalizationFactor = 1 + Math.min(50, level * 0.05) // Límite máximo razonable
+  const timePenalizationFactor = 1 + Math.min(30, level * 0.03)
 
   return {
     name: level,

@@ -19,6 +19,7 @@ import { WinnerModal } from '@/components/WinnerModal'
 import '../assets/gamePage.css'
 import { IconButton } from '@/components/IconButton'
 import { InfoGameHelper } from '@/components/InfoGameHelper'
+import { ConfigGameHelper } from '../components/ConfigGameHelper'
 
 function useGenerateLevel(level) {
   try {
@@ -216,12 +217,7 @@ export function GamePage() {
             goToNextLevel={() => nextLevel()}
             goToPrevLevel={() => prevLevel()}
           />
-          <IconButton
-            icon="mynaui:cog-four-solid"
-            className="game-page-settings-right rotate-hover"
-            style={{ fontSize: 'var(--size-m)' }}
-            onClick={() => {}}
-          />
+          <ConfigGameHelper onChangeOpenState={onPauseGame} style={{ fontSize: 'var(--size-m)' }} />
         </div>
       </main>
     </div>
