@@ -20,8 +20,6 @@ import '../assets/gamePage.css'
 import { IconButton } from '@/components/IconButton'
 import { InfoGameHelper } from '@/components/InfoGameHelper'
 import { ConfigGameHelper } from '../components/ConfigGameHelper'
-import { useFloating } from '@floating-ui/react'
-import { Tooltip } from '../components/TooltipComponent'
 
 function useGenerateLevel(level) {
   try {
@@ -218,7 +216,11 @@ export function GamePage() {
           </DndContext>
         </section>
         <div className="game-page-footer">
-          <InfoGameHelper onChangeOpenState={onPauseGame} style={{ fontSize: 'var(--size-m)' }} />
+          <InfoGameHelper
+            initOpenModal={level === 1}
+            onChangeOpenState={onPauseGame}
+            style={{ fontSize: 'var(--size-m)' }}
+          />
           <GameControls
             onChangeColor={() => changeColor(boardState)}
             goToNextLevel={() => nextLevel()}

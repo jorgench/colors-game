@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { IconButton } from './IconButton'
 import { InstructorModal } from './InstructionModal'
 
-export function InfoGameHelper({ onChangeOpenState = () => {}, ...attrs }) {
-  const [isOpenModal, setIsOpenModal] = useState(false)
+export function InfoGameHelper({ initOpenModal = false, onChangeOpenState = () => {}, ...attrs }) {
+  const [isOpenModal, setIsOpenModal] = useState(initOpenModal)
 
   function closeModal() {
     setIsOpenModal(false)
