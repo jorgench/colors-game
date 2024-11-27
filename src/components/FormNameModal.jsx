@@ -54,7 +54,7 @@ export function FormNameModal({ isOpen = false, onClose = () => {} }) {
         <input
           ref={nameRef}
           type="name"
-          aria-label="ingresatu nombre"
+          aria-label="ingresa tu nombre"
           onFocus={() => setHasError(false)}
           onBlur={() => checkNameValue()}
         />
