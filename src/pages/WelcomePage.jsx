@@ -1,10 +1,9 @@
-import { useState } from 'react'
-import { FormNameModal } from '@/components/FormNameModal'
 import { LogoGame } from '@/components/LogoGame'
 import { PageLayout } from '@/layout/PageLayout'
+import { useGameState } from '../store/game.state'
 
 export function WelcomePage() {
-  const [openModalName, setOpenModalName] = useState(false)
+  const { setStep } = useGameState()
 
   return (
     <PageLayout>
@@ -13,9 +12,8 @@ export function WelcomePage() {
         <p>
           Este es un juego inspirado en <a href="#">Blendoku</a> Realizado en React
         </p>
-        <button onClick={() => setOpenModalName(true)}>Comenzar</button>
+        <button onClick={() => setStep('started')}>Comenzar</button>
       </main>
-      <FormNameModal isOpen={openModalName} onClose={() => setOpenModalName(false)} />
     </PageLayout>
   )
 }
