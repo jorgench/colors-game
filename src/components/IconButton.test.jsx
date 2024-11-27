@@ -2,10 +2,13 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi, describe, test, expect } from 'vitest'
 import { IconButton } from './IconButton'
+import { act } from '@testing-library/react'
 
 vi.mock('@iconify/react', () => ({
   Icon: ({ icon }) => <span data-testid="icon">{icon}</span>, // Mock del Icon para simplificar
 }))
+
+const waitForPosition = () => act(async () => {})
 
 describe('IconButton Component', () => {
   test('renders correctly with an icon', () => {
@@ -49,5 +52,52 @@ describe('IconButton Component', () => {
     button.focus() // Intenta enfocar el botón
 
     expect(button).toHaveFocus() // Verifica que sea enfocable
+  })
+
+  test('displays tooltip on hover or focus', async () => {
+    render(
+      <div>
+        <IconButton icon="test-icon" textTooltip="Tooltip text" />
+      </div>,
+    )
+
+    const button = screen.getByRole('button')
+
+    await userEvent.hover(button)
+    await waitForPosition()
+    expect(screen.getByText('Tooltip text')).toBeInTheDocument()
+
+    await userEvent.unhover(button)
+    await waitForPosition()
+    expect(screen.queryByText('Tooltip text')).not.toBeInTheDocument()
+
+    //button.focus()
+    //expect(screen.getByText('Tooltip text')).toBeInTheDocument()
+  })
+
+  test('does not render tooltip if textTooltip is not provided', async () => {
+    render(<IconButton icon="test-icon" />)
+
+    const button = screen.getByRole('button')
+    await userEvent.hover(button)
+    await waitForPosition()
+    expect(screen.queryByText('Tooltip text')).not.toBeInTheDocument()
+  })
+
+  test('calls onClick handler on click', async () => {
+    const mockOnClick = vi.fn()
+    render(<IconButton icon="test-icon" textTooltip="Tooltip text" onClick={mockOnClick} />)
+
+    const button = screen.getByRole('button')
+
+    await userEvent.click(button)
+    await waitForPosition()
+    expect(mockOnClick).toHaveBeenCalledTimes(1)
+
+    /*or Enter key press
+    button.focus()
+    await userEvent.keyboard('{Enter}')
+    await waitForPosition()
+    expect(mockOnClick).toHaveBeenCalledTimes(2)*/
   })
 })

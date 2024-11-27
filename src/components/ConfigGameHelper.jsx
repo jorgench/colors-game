@@ -22,6 +22,7 @@ export function ConfigGameHelper({ onChangeOpenState, ...props }) {
   return (
     <>
       <IconButton
+        textTooltip="Configuración"
         icon="mynaui:cog-four-solid"
         className="game-page-settings-right rotate-hover"
         {...props}

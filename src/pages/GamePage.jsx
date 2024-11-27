@@ -20,6 +20,8 @@ import '../assets/gamePage.css'
 import { IconButton } from '@/components/IconButton'
 import { InfoGameHelper } from '@/components/InfoGameHelper'
 import { ConfigGameHelper } from '../components/ConfigGameHelper'
+import { useFloating } from '@floating-ui/react'
+import { Tooltip } from '../components/TooltipComponent'
 
 function useGenerateLevel(level) {
   try {
@@ -163,7 +165,12 @@ export function GamePage() {
           <TimerInLevel ref={timerRef} isActive={!isWinner && !gameInPause} />
           <h4 className="title h4">Nivel {localLevel}</h4>
 
-          <IconButton icon="mynaui:logout" style={{ fontSize: 'var(--size-m)' }} onClick={goToHome} />
+          <IconButton
+            textTooltip="Regresar"
+            icon="mynaui:logout"
+            style={{ fontSize: 'var(--size-m)' }}
+            onClick={goToHome}
+          />
         </div>
 
         <WinnerModal isOpen={isWinner} points={points} onCallback={goToHome} onNextLevelPress={nextLevel} />
@@ -226,11 +233,24 @@ export function GamePage() {
 
 function GameControls({ onChangeColor = () => {}, goToNextLevel = () => {}, goToPrevLevel = () => {} }) {
   return (
-    <div className="game-page-settings">
-      <IconButton icon="mynaui:chevron-left" onClick={() => goToPrevLevel()} />
-      <IconButton icon="mynaui:refresh-alt" className="big-option rotate-hover" onClick={() => onChangeColor()} />
-      <IconButton icon="mynaui:chevron-right" onClick={() => goToNextLevel()} />
-    </div>
+    <>
+      <div className="game-page-settings">
+        <IconButton
+          textTooltip="Regresar al nivel anterior"
+          icon="mynaui:chevron-left"
+          onClick={() => goToPrevLevel()}
+        />
+
+        <IconButton
+          textTooltip="Cambiar color"
+          icon="mynaui:refresh-alt"
+          className="big-option rotate-hover"
+          onClick={() => onChangeColor()}
+        />
+
+        <IconButton textTooltip="Siguiente nivel" icon="mynaui:chevron-right" onClick={() => goToNextLevel()} />
+      </div>
+    </>
   )
 }
 

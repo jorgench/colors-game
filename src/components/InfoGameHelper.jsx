@@ -17,7 +17,7 @@ export function InfoGameHelper({ onChangeOpenState = () => {}, ...attrs }) {
 
   return (
     <>
-      <IconButton icon="mynaui:info-circle-solid" onClick={openModal} {...attrs} />
+      <IconButton textTooltip="Ayuda" icon="mynaui:info-circle-solid" onClick={openModal} {...attrs} />
       <InstructorModal isOpen={isOpenModal} onClose={closeModal} />
     </>
   )
