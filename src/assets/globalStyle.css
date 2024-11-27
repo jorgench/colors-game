@@ -136,7 +136,7 @@ button:focus-visible, .button:focus-visible {
 button:active {
   background-color: var(--secondary-surface);
   outline-color: var(--secondary-surface);
-  transform: scale(0.9);
+  transform: scale(0.98);
 }
 
 
@@ -284,7 +284,8 @@ input:not([type="checkbox"]),.input:not([type="checkbox"]) {
   background: transparent;
   padding: var(--size-xs) var(--size-s);
   color: var(--default-color);
-  outline: var(--default-color) auto 1px;
+  outline:  var(--size-xs) auto  var(--default-color);
+  border: 0;
   margin: 0;
 }
 
