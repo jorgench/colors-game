@@ -101,6 +101,7 @@ export function GamePage() {
   const timerRef = useRef()
   const [points, setPoints] = useState(0)
   const [localLevel] = useState(level)
+  const [gameInPause, setGameInPause] = useState(false)
 
   useEffect(() => {
     if (isWinner) {
@@ -149,12 +150,16 @@ export function GamePage() {
     moveToLevel(localLevel + 1)
   }
 
+  function onPauseGame(pauseGame) {
+    setGameInPause(pauseGame)
+  }
+
   return (
     <div className="layout">
       <main className="container game-page">
         <div className="game-page-header animate">
           {/*Grid: {gridMap.length} {gridMap[0].length}*/}
-          <TimerInLevel ref={timerRef} isActive={!isWinner} />
+          <TimerInLevel ref={timerRef} isActive={!isWinner && !gameInPause} />
           <h4 className="title h4">Nivel {localLevel}</h4>
 
           <IconButton icon="mynaui:logout" style={{ fontSize: 'var(--size-m)' }} onClick={goToHome} />
@@ -205,7 +210,7 @@ export function GamePage() {
           </DndContext>
         </section>
         <div className="game-page-footer">
-          <InfoGameHelper style={{ fontSize: 'var(--size-m)' }} />
+          <InfoGameHelper onChangeOpenState={onPauseGame} style={{ fontSize: 'var(--size-m)' }} />
           <GameControls
             onChangeColor={() => changeColor(boardState)}
             goToNextLevel={() => nextLevel()}
