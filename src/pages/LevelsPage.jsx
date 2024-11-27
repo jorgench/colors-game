@@ -4,14 +4,13 @@ import { useGameState } from '@/store/game.state'
 import { PageLayout } from '@/layout/PageLayout'
 
 export function LevelsPage() {
-  const allLevels = 25
+  const levelsByPage = 25
   const { setLevel, pointsHistory, level } = useGameState()
-  const [page, setPage] = useState(Math.ceil((level + 1) / allLevels))
-
-  const itemsPerPage = Array(allLevels)
+  const [page, setPage] = useState(Math.ceil((level + 1) / levelsByPage))
+  const itemsPerPage = Array(levelsByPage)
     .fill(null)
     .map((_, i) => {
-      const level = i + 1 + allLevels * (page - 1)
+      const level = i + 1 + levelsByPage * (page - 1)
       const points = pointsHistory[level - 1]?.points ?? 0
 
       return {
@@ -35,7 +34,7 @@ export function LevelsPage() {
     <PageLayout>
       <main className="container page">
         <h1 className="title animate fade-entry">
-          Niveles {allLevels * (page - 1) + 1}-{allLevels * page}
+          Niveles {levelsByPage * (page - 1) + 1}-{levelsByPage * page}
         </h1>
 
         <div
