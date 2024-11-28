@@ -24,7 +24,7 @@ describe('Form Name Modal Component', () => {
   test('renders correctly when open', () => {
     render(<FormNameModal isOpen={true} />)
     expect(screen.getByText('Ingresa tu nombre')).toBeInTheDocument()
-    expect(screen.getByRole('textbox', { name: /ingresatu nombre/i })).toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: /ingresa tu nombre/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /aceptar/i })).toBeInTheDocument()
   })
 
@@ -43,7 +43,7 @@ describe('Form Name Modal Component', () => {
   test('shows error message when name is invalid', async () => {
     render(<FormNameModal isOpen={true} />)
 
-    const input = screen.getByRole('textbox', { name: /ingresatu nombre/i })
+    const input = screen.getByRole('textbox', { name: /ingresa tu nombre/i })
     const button = screen.getByRole('button', { name: /aceptar/i })
     await act(async () => {
       await userEvent.click(button)
@@ -60,7 +60,7 @@ describe('Form Name Modal Component', () => {
   test('hides error message when input is focused', async () => {
     render(<FormNameModal isOpen={true} />)
 
-    const input = screen.getByRole('textbox', { name: /ingresatu nombre/i })
+    const input = screen.getByRole('textbox', { name: /ingresa tu nombre/i })
     const button = screen.getByRole('button', { name: /aceptar/i })
 
     await userEvent.click(button)
@@ -73,7 +73,7 @@ describe('Form Name Modal Component', () => {
   test('calls setPlayer with valid name', async () => {
     render(<FormNameModal isOpen={true} />)
 
-    const input = screen.getByRole('textbox', { name: /ingresatu nombre/i })
+    const input = screen.getByRole('textbox', { name: /ingresa tu nombre/i })
     const button = screen.getByRole('button', { name: /aceptar/i })
 
     await userEvent.type(input, 'Jose Roberto')
