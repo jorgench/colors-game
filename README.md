@@ -1,25 +1,40 @@
-# React Template 🚀
+# Colors Game
 
-Este template de react tiene una configuración básica para iniciar una demo o pequeño proyecto. Tiene herramientas configuradas para mantener un código limpio y consistente.
+Un juego inspirado en [Blendoku](https://blendoku.com/), desarrollado con React. Este proyecto fue creado como una exploración creativa para practicar y mejorar habilidades.
 
-## Uso
+## 🚀 Características
 
-### Iniciar con degit
+- Organiza colores en la secuencia correcta.
+- Progreso guardado localmente en el navegador.
+- Interfaz simple y atractiva.
 
+## 📦 Instalación
+
+Sigue estos pasos para clonar y ejecutar el proyecto en tu máquina local:
+
+1. Clona este repositorio:
+
+```bash
+git clone https://github.com/usuario/repositorio.git
+cd repositorio
 ```
-npx degit jorgench/react-js-template my-new-app
-cd my-new-app
-pnpm i
+
+2. Instalación de dependencias: Utiliza `pnpm` pero puedes usar tranquilamente `npm` u otro
+
+```bash
+ pnpm install
 ```
 
-Puedes usar pnpm u otro similar. Si quieres usar pnpm y aún no lo tienes puedes instalarlo así:
+3.Inicia el servidor de desarrollo:
 
+```bash
+pnpm dev
 ```
-npm install -g pnpm
-```
 
-## 🚀 Tecnologías y Herramientas
+## 🎯 Objetivo
 
-- **React + Vite**: Rápido entorno de desarrollo y build eficiente.
-- **ESLint** y **Prettier**: Linter y formateador configurados para mantener buenas prácticas.
-- **Husky** y **lint-staged**: Validación de código en cada commit.
+Este proyecto no solo busca ofrecer una experiencia entretenida, sino también recopilar feedback para seguir aprendiendo y mejorando.
+
+## ✨ Feedback
+
+¿Tienes comentarios o sugerencias? ¡Son más que bienvenidos! Puedes abrir un [issue](/issues) en el repositorio o contactarme directamente.
