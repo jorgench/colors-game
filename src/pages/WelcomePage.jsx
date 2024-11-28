@@ -10,7 +10,9 @@ export function WelcomePage() {
       <main className="container page animate fade-entry">
         <LogoGame className="title h1" />
         <p>
-          Este es un juego inspirado en <a href="#">Blendoku</a> Realizado en React
+          Este es un juego inspirado en <a href="https://en.wikipedia.org/wiki/Blendoku">Blendoku</a>. Tu progreso se
+          guardará localmente. Los niveles y colores se generan de manera progresiva y el juego está en constante
+          mejora.
         </p>
         <button onClick={() => setStep('started')}>Comenzar</button>
       </main>
