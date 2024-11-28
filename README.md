@@ -37,4 +37,4 @@ Este proyecto no solo busca ofrecer una experiencia entretenida, sino también r
 
 ## ✨ Feedback
 
-¿Tienes comentarios o sugerencias? ¡Son más que bienvenidos! Puedes abrir un [issue](/issues) en el repositorio o contactarme directamente.
+¿Tienes comentarios o sugerencias? ¡Son más que bienvenidos! Puedes abrir un [issue](https://github.com/jorgench/colors-game/issues) en el repositorio o contactarme directamente.
