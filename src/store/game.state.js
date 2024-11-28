@@ -9,9 +9,6 @@ export const useGameState = create(
         gameStep: 'empty', //started, finish
         level: 0,
         pointsHistory: [],
-        player: {
-          name: '',
-        },
       },
       set => {
         return {
@@ -45,13 +42,6 @@ export const useGameState = create(
               gameStep: 'finish',
             }))
           },
-          setPlayer(name = '') {
-            if (name === '') return
-            set(() => ({
-              player: { name: name },
-              gameStep: 'started',
-            }))
-          },
           setStep(step = 'finish') {
             set(() => ({
               gameStep: step,
@@ -80,8 +70,8 @@ export const useGameState = create(
       name: 'gameStorage',
       storage: createJSONStorage(() => localStorage, {
         replacer: (key, value) => {
-          if (key === 'gameStep' && value === 'finish') {
-            return 'started'
+          if (key === 'gameStep') {
+            return 'empty'
           }
           return value
         },
