@@ -98,6 +98,10 @@ body {
   transition: all 0.2s;
 }
 
+html {
+  font-size: 14px;
+}
+
 a {
   font-weight: 500;
   color: var(--primary-surface);
@@ -410,4 +414,24 @@ input:not([type="checkbox"]):focus-visible, .input:not([type="checkbox"]):focus-
   padding: 0.5em;
   border-radius: 0.5em;
   width: max-content;
+}
+
+.level-page-grid {
+  display: grid;
+  grid-template-columns: repeat(4, var(--size-box));
+  gap: 1rem;
+  align-content: center;
+  justify-content: center;
+}
+
+@media (min-width: 412px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 468px) {
+  .level-page-grid {
+    grid-template-columns: repeat(5, var(--size-box));
+  }
 }

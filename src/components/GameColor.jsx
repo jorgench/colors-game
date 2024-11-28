@@ -21,6 +21,7 @@ export function GameColor({ id, children, color, data, isInCorrectPlace = false 
     alignItems: 'flex-end',
     boxSizing: 'border-box',
     padding: '0.5em',
+    touchAction: 'none',
     // Outputs `translate3d(x, y, 0)`
     transform: CSS.Translate.toString(transform),
   }

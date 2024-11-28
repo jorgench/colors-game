@@ -37,15 +37,7 @@ export function LevelsPage() {
           Niveles {levelsByPage * (page - 1) + 1}-{levelsByPage * page}
         </h1>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(5, var(--size-box))',
-            gap: '1rem',
-            alignContent: 'center',
-            justifyContent: 'center',
-          }}
-        >
+        <div className="level-page-grid">
           {itemsPerPage.map((level, i) => {
             return (
               <LevelItem

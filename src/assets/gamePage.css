@@ -65,3 +65,13 @@
   animation-fill-mode: backwards;
 }
 
+@media (max-width: 412px) {
+  .game-page-footer {
+    gap: 0.25rem;
+  }
+
+  .game-page-settings > .big-option {
+    font-size: 1em;
+  }
+}
+
