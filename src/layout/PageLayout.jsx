@@ -1,3 +1,4 @@
+import { Icon } from '@iconify/react/dist/iconify.js'
 import { HeaderPage } from '../components/HeaderPage'
 
 export function PageLayout({ children }) {
@@ -11,5 +12,10 @@ export function PageLayout({ children }) {
 }
 
 function FooterPage() {
-  return <footer className="footer">Versión únicamente test</footer>
+  return (
+    <footer className="footer center">
+      <Icon icon="mynaui:brand-github-solid"></Icon>
+      <a href="https://github.com/jorgench/colors-game">Ver Código</a>
+    </footer>
+  )
 }

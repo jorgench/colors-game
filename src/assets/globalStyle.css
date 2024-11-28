@@ -34,7 +34,7 @@
   --size-xl: 8rem;
 
 
-  --size-box: clamp(5rem, calc(2vh + 2rem) , 10vh);
+  --size-box: clamp(4.25rem, calc(2vh + 2rem) , 10vh);
   --transparent-surface-color: rgba(0,0,0,0.2);
 
   --max-width-container: 95rem;
@@ -238,6 +238,10 @@ button:active {
   animation-name: entryBottom;
   animation-timing-function: ease;
   animation-fill-mode: backwards;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--size-xs);
 }
 
 .header-page {
