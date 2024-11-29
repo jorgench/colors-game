@@ -34,8 +34,8 @@ const instructions = [
           </ul>
         </article>
         <video className="video" autoPlay loop key="video-step-1">
-          <source type="video/webm" src="/videos/example_to_play.webm" />
-          <source type="video/mp4" src="/videos/example_to_play.mp4" />
+          <source type="video/webm" src="videos/example_to_play.webm" />
+          <source type="video/mp4" src="videos/example_to_play.mp4" />
         </video>
       </div>
     ),
@@ -50,8 +50,8 @@ const instructions = [
           deseas cambiarlos, puedes hacerlo presionando el siguiente <strong>botón</strong>.
         </article>
         <video className="video" autoPlay loop key="video-step-2">
-          <source type="video/webm" src="/videos/example_to_change_color.webm" />
-          <source type="video/mp4" src="/videos/example_to_change_color.mp4" />
+          <source type="video/webm" src="videos/example_to_change_color.webm" />
+          <source type="video/mp4" src="videos/example_to_change_color.mp4" />
         </video>
       </div>
     ),
