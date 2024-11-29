@@ -1,4 +1,3 @@
-import { PageLayout } from './layout/PageLayout'
 import { GameContainerPage } from './pages/GameContainerPage'
 import { LevelsPage } from './pages/LevelsPage'
 import { WelcomePage } from './pages/WelcomePage'
