@@ -18,7 +18,7 @@
   "lint-staged": {
     "*.{js,css,ts,tsx,jsx}": [
       "prettier --write",
-      "eslint \"**/*.+(js|jsx)\" --fix"
+      "eslint --fix"
     ]
   },
   "dependencies": {
@@ -57,7 +57,7 @@
     "husky": "^9.1.6",
     "jsdom": "^25.0.1",
     "jsdom-testing-mocks": "^1.13.1",
-    "lint-staged": "^15.2.10",
+    "lint-staged": "15.2.10",
     "prettier": "^3.3.3",
     "vite": "^5.4.8",
     "vitest": "^2.1.5"
